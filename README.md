@@ -1,4 +1,4 @@
-# Rally
+# Rally api
 
 ## Requirements
 - python 3.10.x
