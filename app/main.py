@@ -93,10 +93,16 @@ class Magazine:
         self._roadtrip = roadtrip
         self._name = name
 
+class RoadtripPage:
+    def __init__(self, introduction_text, ending_text):
+        self._introduction_text = introduction_text
+        self._ending_text = ending_text
+        self._waypoints = []
+
 class LandmarkType(Enum):
     outdoor, restaurants, camp, activity, shopping, transportation_service, sport_and_wellness, fuel_and_rest_stop\
     = 1, 2, 3, 4, 5, 6, 7, 8
-    
+
 class Role(Enum):
     user,admin\
     = 0, 1
