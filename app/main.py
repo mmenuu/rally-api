@@ -8,15 +8,19 @@ class Account:
         self.__login_status = login_status
 
 class User(Account):
-    def __init__(self, id, email, password, login_status, username, address, bio, profile_image):
+    def __init__(self, id, email, password, login_status, username, address):
         super().__init__(id, email, password, login_status)
         self.__username = username
         self.__address = address
-        self.__bio = bio
-        self.__address = address
-        self.__profile_image = profile_image
         self.__role = "user"
         
+class Profile(User):
+    def __init__(self, id, email, password, login_status, username, address, bio, profile_image,name):
+        super().__init__(id, email, password, login_status, username, address)
+        self.__name = name
+        self.__bio = bio
+        self.__profile_image = profile_image
+    
 class Admin(Account):
     def __init__(self, id, email, password, login_status):
         super().__init__(id, email, password, login_status)
@@ -38,6 +42,8 @@ class Landmark:
         self._address = address
         self._image = image
         self._type = type
+
+
     
 # มี class ที่มี arttibute เหมือนกัน
 class Search:
