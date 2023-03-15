@@ -39,7 +39,6 @@ class Landmark:
         self._image = image
         self._type = type
     
-
 # มี class ที่มี arttibute เหมือนกัน
 class Search:
     def __init__(self):
@@ -82,6 +81,11 @@ class WaypointDetail:
     def __init__(self, waypoint_id, text):
         self._waypoint_id = waypoint_id
         self._text = text
+
+class Magazine:
+    def __init__(self, roadtrip, name):
+        self._roadtrip = roadtrip
+        self._name = name
 
 class LandmarkType(Enum):
     outdoor, restaurants, camp, activity, shopping, transportation_service, sport_and_wellness, fuel_and_rest_stop\
