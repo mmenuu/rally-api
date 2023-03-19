@@ -42,8 +42,7 @@ class Landmark:
         self._address = address
         self._image = image
         self._type = type
-
-
+    
     
 # มี class ที่มี arttibute เหมือนกัน
 class Search:
@@ -53,7 +52,6 @@ class Search:
 class LandmarkCatalog:
     def __init__(self, landmarks):
         self._landmarks = [] # list of landmark object
-
 class FavoriteCatalog:
     def __init__(self, landmarks):
         self._landmarks = [] # list of landmark object
@@ -76,7 +74,7 @@ class RoadtripCatalog:
     def __init__(self, roadtrips):
         self._roadtrips = [] # list of roadtrip objects
 
-class RoadtripGuide:
+class RoadtripPage:
     def __init__(self, subtitle, introduction_text, ending_text, waypoints):
         self._subtitle = subtitle
         self._introduction_text = introduction_text
@@ -92,13 +90,7 @@ class Magazine:
     def __init__(self, roadtrip, name):
         self._roadtrip = roadtrip
         self._name = name
-
-class RoadtripPage:
-    def __init__(self, introduction_text, ending_text):
-        self._introduction_text = introduction_text
-        self._ending_text = ending_text
-        self._waypoints = []
-
+        
 class LandmarkType(Enum):
     outdoor, restaurants, camp, activity, shopping, transportation_service, sport_and_wellness, fuel_and_rest_stop\
     = 1, 2, 3, 4, 5, 6, 7, 8
