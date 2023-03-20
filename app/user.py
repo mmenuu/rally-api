@@ -7,7 +7,7 @@ class User(Account):
         self.__address = address
         self.__role = "user"
     
-    def new_roadtrip(self, landmark, landmark): # for marking start and and endpoint of roadtrip
+    def new_roadtrip(self, start_landmark, end_landmark): # for marking start and and endpoint of roadtrip
         pass
 
     def create_roadtrip(self, roadtrip, landmark): # for pulling or create new roadtrip from zero

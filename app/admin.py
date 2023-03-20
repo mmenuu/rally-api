@@ -1,6 +1,6 @@
-from account import Account
+from user import User
 
-class Admin(Account):
+class Admin(User):
     def __init__(self, id, email, password, login_status):
         super().__init__(id, email, password, login_status)
         self.__role = "admin"
