@@ -16,7 +16,8 @@ class MagazineCatalog:
     def remove_magazine(self, id):
         magazine = get_magazine(id)
         if magazine is not None:
-            self._magazine_list.remove(magazine) # if there is that magazine remove magazine from magazine list
+           return self._magazine_list.remove(magazine) # if there is that magazine remove magazine from magazine list
+        return None
         
     
                 
