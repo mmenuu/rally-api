@@ -20,7 +20,7 @@ class ReviewCatalog:
     def remove_review(self, user_id: str, landmark_id: str):
         review = self.get_review_by_userid(user_id, landmark_id)
         if review is not None:
-            self.__reviews.remove(review)
+            return self.__reviews.remove(review)
 
       
    
