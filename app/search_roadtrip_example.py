@@ -1,5 +1,5 @@
 from roadtrip import Roadtrip
-from roadtripcatalog import RoadtripCatalog
+from app.roadtrip_catalog import RoadtripCatalog
 
 from user import User
 from user_list import UserList
