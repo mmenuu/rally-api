@@ -12,8 +12,7 @@ class ReviewCatalog:
     def get_review_by_userid(self, user_id: str, landmark_id: str):
         for review in self.get_reviews_by_userid(user_id):
             if review.__landmark_id == landmark_id:
-                return review 
-            
+                return review    
         return None 
 
     def add_review(self, review):
