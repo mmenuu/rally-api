@@ -8,7 +8,6 @@ class ReviewCatalog:
     def get_reviews_by_userid(self, user_id: str ):
         return [review for review in self.__reviews if review.__reviewer == user_id]
 
-
     def get_review_by_userid(self, user_id: str, landmark_id: str):
         for review in self.get_reviews_by_userid(user_id):
             if review.__landmark_id == landmark_id:
