@@ -21,6 +21,7 @@ class ReviewCatalog:
         review = self.get_review_by_userid(user_id, landmark_id)
         if review is not None:
             return self.__reviews.remove(review)
+        return None
 
       
    
