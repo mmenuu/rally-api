@@ -46,10 +46,6 @@ class Roadtrip:
         '''Get the summary of the roadtrip'''
         return self.__summary
 
-    def set_id(self, id: str):
-        '''Set the ID of the roadtrip'''
-        self.__id = id
-
     def set_author(self, user_id: str):
         '''Set the author of the roadtrip'''
         self.__author = user_id
