@@ -2,7 +2,7 @@ from magazine import Magazine
 
 class MagazineCatalog:
     def __init__(self):
-        self._magazine_list = []
+        self.__magazine_list = []
 
     def get_magazine(self, magazine_id: str):
         for magazine in self._magazine_list:
@@ -10,13 +10,13 @@ class MagazineCatalog:
                 return magazine
         return None # ERROR : magazine not found
         
-    def add_magazine(self, magazine):
-        self._magazine_list.append(magazine) # add magazine to list
+    def add_magazine(self, magazine: Magazine):
+        self.__magazine_list.append(magazine) # add magazine to list
     
-    def remove_magazine(self, id):
+    def remove_magazine(self, id: str):
         magazine = get_magazine(id)
         if magazine is not None:
-           return self._magazine_list.remove(magazine) # if there is that magazine remove magazine from magazine list
+           return self.__magazine_list.remove(magazine) # if there is that magazine remove magazine from magazine list
         return None
         
     
