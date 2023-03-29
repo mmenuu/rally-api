@@ -11,7 +11,7 @@ class RoadtripCatalog:
         '''Get all roadtrips from the catalog'''
         return self.__roadtrips
 
-    def get_roadtrip(self, roadtrip_id: str):
+    def get_roadtrip_by_id(self, roadtrip_id: str):
         '''Get a roadtrip by roadtrip id from the catalog'''
         for roadtrip in self.get_roadtrips():
             if roadtrip.get_id() == roadtrip_id:
@@ -19,7 +19,7 @@ class RoadtripCatalog:
 
         return None  # Roadtrip ID has not been found.
 
-    def get_roadtrips_by_user(self, user_id: str):
+    def get_roadtrips_by_user_id(self, user_id: str):
         '''Get all roadtrips from a user id'''
         return [roadtrip for roadtrip in self.get_roadtrips() if roadtrip.get_author() == user_id]
 
@@ -35,17 +35,17 @@ class RoadtripCatalog:
                             any(regex.search(waypoint.title) for waypoint in item.get_waypoints()))
 
         return search_result
-    
+
     def add_roadtrip(self, roadtrip: Roadtrip):
         '''Add a roadtrip to the catalog'''
         self.__roadtrips.append(roadtrip)
 
-    def remove_roadtrip(self, roadtrip_id: str):
+    def remove_roadtrip_by_id(self, roadtrip_id: str):
         '''Remove a roadtrip by roadtrip id from the catalog'''
-        roadtrip = self.get_roadtrip(roadtrip_id)
+        roadtrip = self.get_roadtrip_by_id(roadtrip_id)
 
         if roadtrip is not None:
-            self.roadtrips.remove(roadtrip)
-            return self.roadtrips
+            self.__roadtrips.remove(roadtrip)
+            return True
 
-        return None
+        return False
