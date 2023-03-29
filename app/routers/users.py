@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 
 from ..dependencies import get_token_header
 from ..internal.user_catalog import UserCatalog
@@ -18,7 +18,7 @@ router = APIRouter(
 )
 
 
-@router.get('/')
+@router.get('/', status_code=status.HTTP_200_OK)
 async def read_users():
     '''Get all users'''
 
@@ -32,7 +32,7 @@ async def read_users():
     return users_exist
 
 
-@router.get('/{user_id}')
+@router.get('/{user_id}', status_code=status.HTTP_200_OK)
 async def read_user(user_id: str):
     '''Get a user by id'''
 

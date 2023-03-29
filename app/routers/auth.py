@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException, status
 
 from ..internal.user import User
 from .users import users_collection
@@ -13,7 +13,7 @@ router = APIRouter(
 )
 
 
-@router.post("/register")
+@router.post("/register", status_code=status.HTTP_201_CREATED)
 async def register(body: dict):
     '''
     # Register a new user
@@ -26,13 +26,13 @@ async def register(body: dict):
 
     # Validate body
     if not body:
-        return {"message": "Body is empty"}
+        return HTTPException(status_code=400, detail="Body is required")
     if not body["email"]:
-        return {"message": "Email is required"}
+        return HTTPException(status_code=400, detail="Email is required")
     if not body["username"]:
-        return {"message": "Username is required"}
+        return HTTPException(status_code=400, detail="Username is required")
     if not body["password"]:
-        return {"message": "Password is required"}
+        return HTTPException(status_code=400, detail="Password is required")
 
     # create new user
     new_user = User(
