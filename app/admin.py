@@ -23,7 +23,7 @@ class Admin(User):
         new_magazine = Magazine(id, roadtrip, name, description)
         MagazineCatalog.add_magazine(new_magazine)
     
-    def delete_magazine(self, i: str):
+    def delete_magazine(self, id: str):
         MagazineCatalog.remove_magazine(id)
     
     def remove_user(self, user):
