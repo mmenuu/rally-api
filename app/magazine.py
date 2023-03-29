@@ -2,7 +2,7 @@ from roadtrip import Roadtrip
 import uuid
 class Magazine:
     def __init__(self, id: str, roadtrip: Roadtrip, name, description):
-        self.__id = id
+        self.__id = str(uuid.uuid4())
         self.__roadtrip = roadtrip
         self.__name = name
         self.__description = description
