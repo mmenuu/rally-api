@@ -18,7 +18,7 @@ async def register(body: dict):
     '''
     # Register a new user
 
-    ## body
+    ### request body
     - email: `str`
     - username: `str`
     - password: `str`
