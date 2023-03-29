@@ -1,8 +1,7 @@
 from fastapi import APIRouter
 
-from app.internal.user_catalog import UserCatalog
-from app.internal.user import User
-from app.routers.users import users_collection
+from ..internal.user import User
+from .users import users_collection
 
 router = APIRouter(
     prefix="/auth",
