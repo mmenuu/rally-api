@@ -6,11 +6,17 @@ class Review:
         self.__landmark_id = landmark_id
         self.__rating = rating
 
-    def edit_review_text(self, text):
+    def set_review_text(self, text: str):
         self.__review_text = text 
 
-    def edit_rating(self, rating):
+    def set_rating(self, rating: float):
         self.__rating = rating
+    
+    def get_review_text(self):
+        return self.__review_text
+    
+    def get_rating(self):
+        return self.__rating
 
     
 
