@@ -1,4 +1,4 @@
-from app.account import Account
+from app.internal.account import Account
 import uuid
 
 class User(Account):

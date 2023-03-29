@@ -1,4 +1,4 @@
-from magazine import Magazine
+from app.internal.magazine import Magazine
 
 class MagazineCatalog:
     def __init__(self):

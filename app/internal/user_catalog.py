@@ -1,4 +1,4 @@
-from app.user import User
+from app.internal.user import User
 
 class UserCatalog:
     def __init__(self):

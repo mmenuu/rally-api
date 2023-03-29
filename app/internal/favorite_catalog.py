@@ -1,4 +1,4 @@
-from favorite_landmark import FavoriteLandmark
+from app.internal.favorite_landmark import FavoriteLandmark
 
 class FavoriteCatalog:
     def __init__(self):

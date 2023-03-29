@@ -1,5 +1,6 @@
-from roadtrip import Roadtrip
+from app.internal.roadtrip import Roadtrip
 import uuid
+
 class Magazine:
     def __init__(self, id: str, roadtrip: Roadtrip, name, description):
         self.__id = str(uuid.uuid4())

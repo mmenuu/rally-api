@@ -1,4 +1,4 @@
-from roadtrip import Roadtrip
+from app.internal.roadtrip import Roadtrip
 
 import re
 

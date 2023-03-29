@@ -1,4 +1,4 @@
-from waypoint import Waypoint
+from app.internal.waypoint import Waypoint
 import uuid
 
 class Roadtrip:
