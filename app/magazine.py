@@ -6,13 +6,13 @@ class Magazine:
         self._name = name
         self._description = description
 
-    def edit_roadtrip(self, roadtrip):
+    def set_magazine_roadtrip(self, roadtrip: Roadtrip):
         self._roadtrip = roadtrip
     
-    def edit_roadtrip(self, name):
+    def set_magazine_name(self, name: str):
         self._name = name
         
-    def edit_description(self, text):
+    def set_magazine_description(self, text: str):
         self._description = text
 
     def get_magazine_id(self):
