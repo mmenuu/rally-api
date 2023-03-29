@@ -1,7 +1,7 @@
 from user import User
 
 class Admin(User):
-    def __init__(self, id, email, password, login_status):
+    def __init__(self, email, password, login_status):
         super().__init__(id, email, password, login_status)
         self.__role = "admin"
     
