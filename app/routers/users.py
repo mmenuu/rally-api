@@ -6,6 +6,7 @@ from app.internal.user import User
 user_storage = UserCatalog()
 
 router = APIRouter(  # กำหนด instance
+    prefix="/users",
     responses={  # response กรณีที่ค้นหาไม่เจอ
         404: {
             'message': 'Not Found'
@@ -14,7 +15,7 @@ router = APIRouter(  # กำหนด instance
 )
 
 
-@router.post("/register")
+@router.post("/")
 async def register(body: dict):
     new_user = User(
         email=body["email"],
@@ -27,7 +28,7 @@ async def register(body: dict):
     return {"message": "User created successfully"}
 
 
-@router.get('/users')
+@router.get('/')
 async def read_users():
     result = user_storage.get_users()
     return result
