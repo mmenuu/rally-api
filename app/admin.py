@@ -1,6 +1,7 @@
 from user import User
 from magazine import Magazine
 from magazine_catalog import MagazineCatalog
+from user_catalog import UserCatalog 
 
 class Admin(User):
     def __init__(self, email, password, login_status):
@@ -23,8 +24,8 @@ class Admin(User):
         new_magazine = Magazine(id, roadtrip, name, description)
         MagazineCatalog.add_magazine(new_magazine)
     
-    def delete_magazine(self, i: str):
+    def delete_magazine(self, id: str):
         MagazineCatalog.remove_magazine(id)
     
-    def remove_user(self, user):
-        pass
+    def remove_user_by_user_id(self, id: str):
+        UserCatalog.remove_user_by_id(id)
