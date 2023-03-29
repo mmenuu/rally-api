@@ -5,6 +5,7 @@ class RoadtripCatalog:
 
     def add_roadtrip(self, roadtrip):
         self.roadtrips.append(roadtrip)
+        
 
     def search(self, keyword):
         regex = re.compile(keyword, re.IGNORECASE)
