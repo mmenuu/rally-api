@@ -26,10 +26,10 @@ venv\Scripts\activate
 
 ### Install dependencies
 ```bash
-pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 ```
 
 ### Run the server
 ```bash
-python -m uvicorn app.main:app --host 0.0.0.0 --port 3000 --reload
+python3 -m uvicorn app.main:app --host 0.0.0.0 --port 3000 --reload
 ```
