@@ -1,11 +1,10 @@
 from user import User
 
-
 class UserCatalog:
     def __init__(self):
         self.__users = []
     
-    def add_user(self, user):
+    def add_user(self, user: User):
         self.__users.append(user)
 
     def get_users(self):

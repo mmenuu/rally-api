@@ -4,7 +4,7 @@ import re
 
 
 class RoadtripCatalog:
-    def __init__(self, roadtrips: None = None | list(Roadtrip)):
+    def __init__(self):
         self.__roadtrips = []
 
     def get_roadtrips(self):
