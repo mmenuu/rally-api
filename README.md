@@ -11,7 +11,7 @@
 
 ### Create virtual environment
 ```bash
-python3 -m venv venv
+python -m venv venv
 ```
 
 ### Activate virtual environment
@@ -26,10 +26,10 @@ venv\Scripts\activate
 
 ### Install dependencies
 ```bash
-python3 -m pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
 ### Run the application
 ```bash
-python3 -m uvicorn app.main:app --host 0.0.0.0 --port 3000 --reload
+python -m uvicorn app.main:app --host 0.0.0.0 --port 3000 --reload
 ```
