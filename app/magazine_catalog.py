@@ -11,12 +11,12 @@ class MagazineCatalog:
         return None # ERROR : magazine not found
         
     def add_magazine(self, magazine: Magazine):
-        self._magazine_list.append(magazine) # add magazine to list
+        self.__magazine_list.append(magazine) # add magazine to list
     
     def remove_magazine(self, id: str):
         magazine = get_magazine(id)
         if magazine is not None:
-           return self._magazine_list.remove(magazine) # if there is that magazine remove magazine from magazine list
+           return self.__magazine_list.remove(magazine) # if there is that magazine remove magazine from magazine list
         return None
         
     
