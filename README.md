@@ -4,12 +4,12 @@
 - python 3.10.x
 
 ## Development
-- Install dependencies
 - Create a virtual environment
 - Activate the virtual environment
+- Install dependencies
 - Run the application
 
-### Setup virtual environment
+### Create virtual environment
 ```bash
 python3 -m venv venv
 ```
@@ -29,7 +29,7 @@ venv\Scripts\activate
 python3 -m pip install -r requirements.txt
 ```
 
-### Run the server
+### Run the application
 ```bash
 python3 -m uvicorn app.main:app --host 0.0.0.0 --port 3000 --reload
 ```
