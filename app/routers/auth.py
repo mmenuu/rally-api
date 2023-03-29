@@ -45,6 +45,6 @@ async def register(body: dict):
     users_collection.add_user(new_user)
 
     return {
-        "message": "User created successfully",
-        "data": new_user
+        "detail": "User created successfully",
+        "user": new_user
     }
