@@ -2,13 +2,10 @@ from roadtrip import Roadtrip
 
 import re
 
+
 class RoadtripCatalog:
     def __init__(self, roadtrips: None = None | list(Roadtrip)):
         self.__roadtrips = []
-
-    def add_roadtrip(self, roadtrip: Roadtrip):
-        '''Add a roadtrip to the catalog'''
-        self.__roadtrips.append(roadtrip)
 
     def get_roadtrips(self):
         '''Get all roadtrips from the catalog'''
@@ -22,16 +19,6 @@ class RoadtripCatalog:
 
         return None  # Roadtrip ID has not been found.
 
-    def remove_roadtrip(self, roadtrip_id: str):
-        '''Remove a roadtrip by roadtrip id from the catalog'''
-        roadtrip = self.get_roadtrip(roadtrip_id)
-
-        if roadtrip is not None:
-            self.roadtrips.remove(roadtrip)
-            return self.roadtrips
-
-        return None
-
     def get_roadtrips_by_user(self, user_id: str):
         '''Get all roadtrips from a user id'''
         return [roadtrip for roadtrip in self.get_roadtrips() if roadtrip.get_author() == user_id]
@@ -43,10 +30,22 @@ class RoadtripCatalog:
     def get_roadtrips_by_keyword(self, keyword: str):
         '''Get all roadtrips from a keyword'''
         regex = re.compile(keyword, re.IGNORECASE)
-        search_result = [item for item in self.get_roadtrips()
-                         if regex.search(item.get_title()) or
-                         regex.search(item.get_author()) or
-                         regex.search(item.get_category()) or
-                         [waypoint for waypoint in item.get_waypoints() if regex.search(waypoint.title)]]
+        search_result = set(item for item in self.get_roadtrips() if
+                            any(regex.search(attr) for attr in [item.get_title(), item.get_author(), item.get_category()]) or
+                            any(regex.search(waypoint.title) for waypoint in item.get_waypoints()))
 
         return search_result
+    
+    def add_roadtrip(self, roadtrip: Roadtrip):
+        '''Add a roadtrip to the catalog'''
+        self.__roadtrips.append(roadtrip)
+
+    def remove_roadtrip(self, roadtrip_id: str):
+        '''Remove a roadtrip by roadtrip id from the catalog'''
+        roadtrip = self.get_roadtrip(roadtrip_id)
+
+        if roadtrip is not None:
+            self.roadtrips.remove(roadtrip)
+            return self.roadtrips
+
+        return None
