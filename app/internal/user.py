@@ -1,5 +1,4 @@
 from app.internal.account import Account
-import uuid
 
 class User(Account):
     def __init__(self, email, username, password):
