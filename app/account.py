@@ -2,28 +2,28 @@ import uuid
 
 class Account:
     def __init__(self, email, username, password):
-        self.__id = str(uuid.uuid4())
-        self.__email = email
-        self.__username = username
-        self.__password = password
+        self.id = str(uuid.uuid4())
+        self.email = email
+        self.username = username
+        self.password = password
 
     def get_id(self):
-        return self.__id
+        return self.id
     
     def get_email(self):
-        return self.__email
+        return self.email
     
     def get_username(self):
-        return self.__username
+        return self.username
     
     def get_password(self):
-        return self.__password
+        return self.password
     
     def set_email(self, email):
-        self.__email = email
+        self.email = email
 
     def set_username(self, username):
-        self.__username = username
+        self.username = username
 
     def set_password(self, password):
         self.__password = password

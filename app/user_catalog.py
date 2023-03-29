@@ -1,8 +1,8 @@
-from user import User
+from app.user import User
 
 class UserCatalog:
     def __init__(self):
-        self.__users = [User]
+        self.__users = []
     
     def add_user(self, user: User):
         self.__users.append(user)
