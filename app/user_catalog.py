@@ -25,15 +25,15 @@ class UserCatalog:
 
         return None
 
-    def get_user_by_id(self, id: str):
+    def get_user_by_id(self, user_id: str):
         for user in self.get_users():
-            if user.get_id() == id:
+            if user.get_id() == user_id:
                 return user
 
         return None
     
-    def remove_user_by_id(self, id: str):
-        user = self.get_user_by_id(id)
+    def remove_user_by_id(self, user_id: str):
+        user = self.get_user_by_id(user_id)
 
         if user is not None:
             self.__users.remove(user)
