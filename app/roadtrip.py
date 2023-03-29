@@ -1,7 +1,10 @@
 from waypoint import Waypoint
 
+
 class Roadtrip:
-    def __init__(self,  id: str,user_id: str, title: str, sub_title: str, description: str, waypoints: list(Waypoint), category: str, summary: str):
+    '''A roadtrip is a collection of waypoints'''
+
+    def __init__(self,  id: str, user_id: str, title: str, sub_title: str, description: str, waypoints: list(Waypoint), category: str, summary: str):
         self.__id = id
         self.__author = user_id
         self.__title = title
@@ -11,26 +14,87 @@ class Roadtrip:
         self.__category = category
         self.__summary = summary
 
-    def add_waypoint(self, new_waypoint: Waypoint):
-        self.waypoints.append(new_waypoint)
-
-    def get_waypoint(self, waypoint_id: str):
-        for waypoint in self.waypoints:
-            if waypoint.id == waypoint_id:
-                return waypoint
-
-        return None  # ERROR: Waypoint not found
+    def get_id(self):
+        '''Get the ID of the roadtrip'''
+        return self.__id
 
     def get_waypoints(self):
-        return self.waypoints
+        '''Get all waypoints from the roadtrip'''
+        return self.__waypoints
 
-    def update_waypoint(self, new_waypoints: list(Waypoint)):
-        self.waypoints = new_waypoints
+    def get_author(self):
+        '''Get the author of the roadtrip'''
+        return self.__author
+
+    def get_title(self):
+        '''Get the title of the roadtrip'''
+        return self.__title
+
+    def get_sub_title(self):
+        '''Get the sub title of the roadtrip'''
+        return self.__sub_title
+
+    def get_description(self):
+        '''Get the description of the roadtrip'''
+        return self.__description
+
+    def get_category(self):
+        '''Get the category of the roadtrip'''
+        return self.__category
+
+    def get_summary(self):
+        '''Get the summary of the roadtrip'''
+        return self.__summary
+
+    def set_id(self, id: str):
+        '''Set the ID of the roadtrip'''
+        self.__id = id
+
+    def set_author(self, user_id: str):
+        '''Set the author of the roadtrip'''
+        self.__author = user_id
+
+    def set_title(self, title: str):
+        '''Set the title of the roadtrip'''
+        self.__title = title
+
+    def set_sub_title(self, sub_title: str):
+        '''Set the sub title of the roadtrip'''
+        self.__sub_title = sub_title
+
+    def set_description(self, description: str):
+        '''Set the description of the roadtrip'''
+        self.__description = description
+
+    def set_waypoints(self, waypoints: list(Waypoint)):
+        '''Set all waypoints from the roadtrip'''
+        self.__waypoints = waypoints
+
+    def set_category(self, category: str):
+        '''Set the category of the roadtrip'''
+        self.__category = category
+
+    def set_summary(self, summary: str):
+        '''Set the summary of the roadtrip'''
+        self.__summary = summary
+
+    def add_waypoint(self, new_waypoint: Waypoint):
+        '''Add a waypoint to the roadtrip'''
+        self.__waypoints.append(new_waypoint)
+
+    def get_waypoint(self, waypoint_id: str):
+        '''Get a waypoint from the roadtrip'''
+        for waypoint in self.get_waypoints():
+            if waypoint.get_id() == waypoint_id:
+                return waypoint
+
+        return None  # Waypoint ID has not been found.
 
     def remove_waypoint(self, waypoint_id: str):
+        '''Remove a waypoint from the roadtrip'''
         waypoint = self.get_waypoint(waypoint_id)
 
         if waypoint is not None:
-            return self.waypoints.remove(waypoint)
+            return self.__waypoints.remove(waypoint)
 
-        return None  # ERROR: Waypoint not found
+        return None  # Waypoint ID has not been found.
