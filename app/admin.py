@@ -1,6 +1,7 @@
 from user import User
 from magazine import Magazine
 from magazine_catalog import MagazineCatalog
+
 class Admin(User):
     def __init__(self, email, password, login_status):
         super().__init__(id, email, password, login_status)

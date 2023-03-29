@@ -1,6 +1,5 @@
-class User:
-    def __init__(self, username, password, email):
-        self.username = username
-        self.password = password
-        self.email = email
-    
+from account import Account
+
+class User(Account):
+    def __init__(self, email, username, password):
+        super().__init__(email, username, password)

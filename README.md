@@ -1,4 +1,4 @@
-# Rally api
+# Rally API
 
 ## Requirements
 - python 3.10.x
@@ -11,7 +11,7 @@
 
 ### Setup virtual environment
 ```bash
-python -m venv venv
+python3 -m venv venv
 ```
 
 ### Activate virtual environment
@@ -31,5 +31,5 @@ pip install -r requirements.txt
 
 ### Run the server
 ```bash
-uvicorn app.main:app --host 0.0.0.0 --port 3000 --reload
+python -m uvicorn app.main:app --host 0.0.0.0 --port 3000 --reload
 ```
