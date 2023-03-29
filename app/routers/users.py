@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
-from ..dependencies import get_token_header
 
+from ..dependencies import get_token_header
 from ..internal.user_catalog import UserCatalog
 
 # catalog of users
@@ -9,12 +9,14 @@ users_collection = UserCatalog()
 router = APIRouter(
     prefix="/users",
     dependencies=[Depends(get_token_header)],
+    tags=["users"],
     responses={
         404: {
             'message': 'Not Found'
         }
     }
 )
+
 
 @router.get('/')
 async def read_users():
@@ -25,7 +27,7 @@ async def read_users():
 
     # check if users exist
     if not users_exist:
-        return {"message": "No users found"}
+        raise HTTPException(status_code=404, detail="No users found")
 
     return users_exist
 
@@ -39,6 +41,6 @@ async def read_user(user_id: str):
 
     # check if user exist
     if user_exist is None:
-        return {"message": "User not found"}
+        raise HTTPException(status_code=404, detail="User not found")
 
     return user_exist
