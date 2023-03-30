@@ -4,13 +4,13 @@ import uuid
 class Roadtrip:
     '''A roadtrip is a collection of waypoints'''
 
-    def __init__(self, user_id: str, title: str, sub_title: str, waypoints: list(), description: str, category: str, summary: str):
+    def __init__(self, user_id: str, title: str, sub_title: str, description: str, category: str, summary: str):
         self.__id = str(uuid.uuid4())
         self.__author = user_id
         self.__title = title
         self.__sub_title = sub_title
         self.__description = description
-        self.__waypoints = waypoints
+        self.__waypoints = list()
         self.__category = category
         self.__summary = summary
 
@@ -46,10 +46,6 @@ class Roadtrip:
         '''Get the summary of the roadtrip'''
         return self.__summary
 
-    def set_id(self, id: str):
-        '''Set the ID of the roadtrip'''
-        self.__id = id
-
     def set_author(self, user_id: str):
         '''Set the author of the roadtrip'''
         self.__author = user_id
@@ -66,7 +62,7 @@ class Roadtrip:
         '''Set the description of the roadtrip'''
         self.__description = description
 
-    def set_waypoints(self, waypoints: list()):
+    def set_waypoints(self, waypoints: list):
         '''Set all waypoints from the roadtrip'''
         self.__waypoints = waypoints
 
@@ -89,7 +85,7 @@ class Roadtrip:
                 return waypoint
 
         return None  # Waypoint ID has not been found.
-
+    
     def remove_waypoint_by_id(self, waypoint_id: str):
         '''Remove a waypoint from the roadtrip'''
         waypoint = self.get_waypoint_by_id(waypoint_id)

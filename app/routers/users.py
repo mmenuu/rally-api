@@ -1,12 +1,16 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends, HTTPException, status
 
-from app.internal.user_catalog import UserCatalog
-from app.internal.user import User
+from ..dependencies import get_token_header
+from ..internal.user_catalog import UserCatalog
 
-user_storage = UserCatalog()
+# catalog of users
+users_collection = UserCatalog()
 
-router = APIRouter(  # กำหนด instance
-    responses={  # response กรณีที่ค้นหาไม่เจอ
+router = APIRouter(
+    prefix="/users",
+    dependencies=[Depends(get_token_header)],
+    tags=["users"],
+    responses={
         404: {
             'message': 'Not Found'
         }
@@ -14,20 +18,29 @@ router = APIRouter(  # กำหนด instance
 )
 
 
-@router.post("/register")
-async def register(body: dict):
-    new_user = User(
-        email=body["email"],
-        username=body["username"],
-        password=body["password"]
-    )
-
-    user_storage.add_user(new_user)
-
-    return {"message": "User created successfully"}
-
-
-@router.get('/users')
+@router.get('/', status_code=status.HTTP_200_OK)
 async def read_users():
-    result = user_storage.get_users()
-    return result
+    '''Get all users'''
+
+    # get all users
+    users_exists = users_collection.get_users()
+
+    # check if users exist
+    if not users_exists:
+        raise HTTPException(status_code=404, detail="No users found")
+
+    return users_exists
+
+
+@router.get('/{user_id}', status_code=status.HTTP_200_OK)
+async def read_user(user_id: str):
+    '''Get a user by id'''
+
+    # get user by id
+    user_exists = users_collection.get_user_by_id(user_id)
+
+    # check if user exist
+    if user_exists is None:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    return user_exists
