@@ -1,5 +1,5 @@
 class ReviewCatalog:
-    def __init__(self, reviews):
+    def __init__(self):
         self.__reviews = [] 
 
     def get_reviews(self):
@@ -18,7 +18,7 @@ class ReviewCatalog:
     def get_reviews_by_user(self, user_id: str ):
         return [review for review in self.get_reviews() if review.get_reviewer() == user_id]
     
-    def add_review(self, review):
+    def add_review(self, review): 
         self.__reviews.append(review)
 
     def remove_review(self, user_id: str, landmark_id: str):
@@ -27,4 +27,4 @@ class ReviewCatalog:
         if review is not None:
             return self.__reviews.remove(review)
         
-        return None
+        return False
