@@ -1,7 +1,7 @@
 class Waypoint:
     '''Class for a waypoint in a roadtrip'''
 
-    def __init__(self, id: str, name: str, description: str, position: list(float), note: str, amenity: str):
+    def __init__(self, id: str, name: str, description: str, position: list(), note: str, amenity: str):
         self.__id = id
         self.__name = name
         self.__description = description
@@ -45,7 +45,7 @@ class Waypoint:
         '''Set the description of the waypoint'''
         self.__description = description
 
-    def set_position(self, position: list(float)):
+    def set_position(self, position: list()):
         '''Set the position [lag, long] of the waypoint'''
         self.__position = position
 

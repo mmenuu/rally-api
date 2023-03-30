@@ -4,7 +4,7 @@ import uuid
 class Roadtrip:
     '''A roadtrip is a collection of waypoints'''
 
-    def __init__(self, user_id: str, title: str, sub_title: str, description: str, waypoints: list(Waypoint), category: str, summary: str):
+    def __init__(self, user_id: str, title: str, sub_title: str, waypoints: list(), description: str, category: str, summary: str):
         self.__id = str(uuid.uuid4())
         self.__author = user_id
         self.__title = title
@@ -66,7 +66,7 @@ class Roadtrip:
         '''Set the description of the roadtrip'''
         self.__description = description
 
-    def set_waypoints(self, waypoints: list(Waypoint)):
+    def set_waypoints(self, waypoints: list()):
         '''Set all waypoints from the roadtrip'''
         self.__waypoints = waypoints
 
