@@ -21,7 +21,10 @@ async def get_roadtrips():
     '''
     # Get all roadtrips
     '''
-    return roadtrip_collection.get_roadtrips()
+    roadtrips_exits = roadtrip_collection.get_roadtrips()
+    if not roadtrips_exits:
+        raise HTTPException(status_code=404, detail="No roadtrips found")
+    return roadtrips_exits
 
 
 @router.post("/")
@@ -74,9 +77,9 @@ async def get_roadtrip(roadtrip_id: str):
     '''
     # Get a roadtrip by id
     '''
-    roadtrip_exist = roadtrip_collection.get_roadtrip_by_id(roadtrip_id)
+    roadtrip_exists = roadtrip_collection.get_roadtrip_by_id(roadtrip_id)
 
-    if roadtrip_exist is None:
+    if roadtrip_exists is None:
         raise HTTPException(status_code=404, detail="Roadtrip not found")
     
-    return roadtrip_exist
+    return roadtrip_exists
