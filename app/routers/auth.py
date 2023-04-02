@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, status
 
 from ..databases import users_collection
-from .users import users_collection
+from ..internal.user import User
 
 router = APIRouter(
     prefix="/auth",
