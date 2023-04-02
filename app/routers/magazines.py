@@ -1,17 +1,16 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from ..dependencies import get_token_header
+from ..databases import magazines_collection
+from ..internal.magazine import Magazine
 
-from app.internal.magazine_catalog import MagazineCatalog
-from app.internal.magazine import Magazine
-
-magazines_collection = MagazineCatalog()
-
-router = APIRouter(  # กำหนด instance
-    prefix="/magazines",  # กำหนด prefix ของ path
-    responses={  # response กรณีที่ค้นหาไม่เจอ
+router = APIRouter( 
+    prefix="/magazines",
+    responses={ 
         404: {
             'message': 'Not Found'
         }
-    }
+    },
+    dependencies=[Depends(get_token_header)]
 )
 
 @router.post("/")

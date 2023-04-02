@@ -1,10 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
+from ..databases import users_collection
 from ..dependencies import get_token_header
-from ..internal.user_catalog import UserCatalog
-
-# catalog of users
-users_collection = UserCatalog()
 
 router = APIRouter(
     prefix="/users",

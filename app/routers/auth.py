@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status
 
-from ..internal.user import User
+from ..databases import users_collection
 from .users import users_collection
 
 router = APIRouter(
