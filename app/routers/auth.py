@@ -48,3 +48,13 @@ async def register(body: dict):
         "detail": "User created successfully",
         "user": new_user
     }
+
+
+@router.post("/login", status_code=status.HTTP_200_OK)
+async def login(body: dict):
+    # TODO: implement login
+    # 1. validate body
+    # 2. check if user exists
+    # 3. check if password is correct
+    # 4. return jwt token
+    pass
