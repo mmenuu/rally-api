@@ -1,20 +1,15 @@
 from fastapi import FastAPI
-<<<<<<< HEAD
-from app.routers import users, reviews
-=======
 
-from .routers import users, auth, roadtrips
->>>>>>> b92ec929d545db498b82b15918b5c38bc99fa691
+from .routers import users, auth, roadtrips, magazines, reviews
 
 app = FastAPI()
 
 app.include_router(users.router)
-<<<<<<< HEAD
-app.include_router(reviews.router)
-=======
+
 app.include_router(auth.router)
+app.include_router(magazines.router)
 app.include_router(roadtrips.router)
->>>>>>> b92ec929d545db498b82b15918b5c38bc99fa691
+app.include_router(reviews.router)
 
 @app.get("/")
 def read_root():

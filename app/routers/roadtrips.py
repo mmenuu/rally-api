@@ -1,7 +1,8 @@
 from fastapi import APIRouter, HTTPException, status, Depends
+
+from ..databases import roadtrip_collection
 from ..dependencies import get_token_header
 from ..internal.roadtrip import Roadtrip
-from ..internal.roadtrip_catalog import RoadtripCatalog
 
 router = APIRouter(
     prefix="/roadtrips",
@@ -12,9 +13,6 @@ router = APIRouter(
     },
     dependencies=[Depends(get_token_header)]
 )
-
-roadtrip_collection = RoadtripCatalog()
-
 
 @router.get("/")
 async def get_roadtrips():
