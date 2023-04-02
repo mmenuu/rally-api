@@ -8,5 +8,4 @@ jobs:
             - name: "TODO to Issue"
               uses: "alstr/todo-to-issue-action@v4"
               with:
-                AUTO_ASSIGN: true
                 PROJECTS_SECRET: ${{ secrets.PROJECTS_SECRET }}
