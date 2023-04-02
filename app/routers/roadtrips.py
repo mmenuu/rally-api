@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 
-from ..databases import roadtrip_collection
+from ..databases import roadtrips_collection
 from ..dependencies import get_token_header
 from ..internal.roadtrip import Roadtrip
 
@@ -19,7 +19,7 @@ async def get_roadtrips():
     '''
     # Get all roadtrips
     '''
-    roadtrips_exits = roadtrip_collection.get_roadtrips()
+    roadtrips_exits = roadtrips_collection.get_roadtrips()
     if not roadtrips_exits:
         raise HTTPException(status_code=404, detail="No roadtrips found")
     return roadtrips_exits
@@ -63,7 +63,7 @@ async def create_roadtrip(body: dict):
         user_id=body['user_id']
     )
 
-    roadtrip_collection.add_roadtrip(new_roadtrip)
+    roadtrips_collection.add_roadtrip(new_roadtrip)
 
     return {
         "detail": "Roadtrip created successfully",
@@ -75,7 +75,7 @@ async def get_roadtrip(roadtrip_id: str):
     '''
     # Get a roadtrip by id
     '''
-    roadtrip_exists = roadtrip_collection.get_roadtrip_by_id(roadtrip_id)
+    roadtrip_exists = roadtrips_collection.get_roadtrip_by_id(roadtrip_id)
 
     if roadtrip_exists is None:
         raise HTTPException(status_code=404, detail="Roadtrip not found")
