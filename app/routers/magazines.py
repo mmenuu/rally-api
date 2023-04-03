@@ -21,6 +21,14 @@ async def create_magazine(body: dict):
     - title: `str`
     - description: `str`
     '''
+     # validate body
+    if not body:
+        return HTTPException(status_code=400, detail="Body is required")
+    if not body['title']:
+        return HTTPException(status_code=400, detail="title is required")
+    if not body['description']:
+        return HTTPException(status_code=400, detail="description is required")
+
     new_magazine = Magazine(
         name=body["title"],
         description=body["description"]
@@ -82,5 +90,27 @@ async def edit_magazine(body: dict):
     return {"message":"magazine edited successfully",
             "new_magazine": new_magazine
     }
+
+@router.delete("/")
+async def delete_magazine(body: dict):
+    '''
+    # delete existing magazine
+    ### request body
+    - magazine_id: `str`
+    '''
+
+    # validate body
+    if not body:
+        return HTTPException(status_code=400, detail="Body is required")
+    if not body['magazine_id']:
+        return HTTPException(status_code=400, detail="magazine_id is required")
+
+    magazines_collection.remove_magazine(body['magazine_id'])
+
+    return {
+        "message": "Magazine deleted successfully"
+    }
+
+
 
 
