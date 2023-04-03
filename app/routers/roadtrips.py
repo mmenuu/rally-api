@@ -84,5 +84,6 @@ async def get_roadtrip(roadtrip_id: str):
 
 @router.put("/{roadtrip_id}")
 async def update_roadtrip(roadtrip_id: str, body: dict):
-    # TODO implement update roadtrip by id
+    # TODO implement update roadtrip by id.
+    # find roadtrip by id and update it
     pass

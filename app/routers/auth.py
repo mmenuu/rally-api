@@ -15,7 +15,9 @@ router = APIRouter(
 
 @router.post("/register", status_code=status.HTTP_201_CREATED)
 async def register(body: dict):
-    # TODO implement register and Return a JWT token
+    # TODO implement register and Return a JWT token.
+    # verify if user already exists in the database.
+
     '''
     # Register a new user
 
@@ -53,5 +55,6 @@ async def register(body: dict):
 
 @router.post("/login", status_code=status.HTTP_200_OK)
 async def login(body: dict):
-    # TODO implement login
+    # TODO implement login.
+    # verify if user exists in the database and return a JWT token.
     pass
