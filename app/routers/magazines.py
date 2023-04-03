@@ -1,17 +1,19 @@
 from fastapi import APIRouter, Depends
+
 from ..dependencies import get_token_header
 from ..databases import magazines_collection
 from ..internal.magazine import Magazine
 
-router = APIRouter( 
+router = APIRouter(
     prefix="/magazines",
-    responses={ 
+    responses={
         404: {
             'message': 'Not Found'
         }
     },
     dependencies=[Depends(get_token_header)]
 )
+
 
 @router.post("/")
 async def create_magazine(body: dict):
@@ -21,7 +23,7 @@ async def create_magazine(body: dict):
     - title: `str`
     - description: `str`
     '''
-     # validate body
+    # validate body
     if not body:
         return HTTPException(status_code=400, detail="Body is required")
     if not body['title']:
@@ -34,13 +36,14 @@ async def create_magazine(body: dict):
         description=body["description"]
     )
 
-    # add magazine to list 
+    # add magazine to list
     magazines_collection.add_magazine(new_magazine)
 
     return {
-        "message": "User created successfully",
+        "detail": "User created successfully",
         "new_magazine": new_magazine
     }
+
 
 @router.get("/")
 async def read_magazine():
@@ -49,6 +52,7 @@ async def read_magazine():
     '''
     result = magazines_collection.get_magazines()
     return result
+
 
 @router.put("/")
 async def edit_magazine(body: dict):
@@ -77,19 +81,20 @@ async def edit_magazine(body: dict):
     # edit magazine by id
     if body['title'] != '':
         new_magazine.set_name(body['title'])
-    
+
     if body['description'] != '':
         new_magazine.set_description(body['description'])
 
     if body['add_roadtrip_id'] != '':
         new_magazine.add_roadtrip_id(body['add_roadtrip_id'])
 
-    if body['remove_roadtrip_id'] != '':    
+    if body['remove_roadtrip_id'] != '':
         new_magazine.remove_roadtrip_id(body['remove_roadtrip_id'])
-    
-    return {"message":"magazine edited successfully",
+
+    return {"detail": "magazine edited successfully",
             "new_magazine": new_magazine
-    }
+            }
+
 
 @router.delete("/")
 async def delete_magazine(body: dict):
@@ -108,9 +113,5 @@ async def delete_magazine(body: dict):
     magazines_collection.remove_magazine(body['magazine_id'])
 
     return {
-        "message": "Magazine deleted successfully"
+        "detail": "Magazine deleted successfully"
     }
-
-
-
-
