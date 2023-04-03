@@ -22,13 +22,17 @@ async def create_magazine(body: dict):
     - description: `str`
     '''
     new_magazine = Magazine(
-        name = body["name"],
-        description = body["description"]
+        name=body["name"],
+        description=body["description"]
     )
 
     # add magazine to list 
     magazines_collection.add_magazine(new_magazine)
-    return {"message": "User created successfully"}
+
+    return {
+        "message": "User created successfully",
+        "new_magazine": new_magazine
+    }
 
 @router.get("/")
 async def read_magazine():
