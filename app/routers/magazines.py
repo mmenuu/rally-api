@@ -18,11 +18,11 @@ async def create_magazine(body: dict):
     '''
     # create new magazine
     ### request body
-    - name: `str`
+    - title: `str`
     - description: `str`
     '''
     new_magazine = Magazine(
-        name=body["name"],
+        name=body["title"],
         description=body["description"]
     )
 
@@ -43,7 +43,7 @@ async def read_magazine():
     return result
 
 @router.put("/")
-async def edit_magazine():
+async def edit_magazine(body: dict):
     '''
     #edit magazine by id
     ### request body
@@ -64,12 +64,12 @@ async def edit_magazine():
     if not body['description']:
         return HTTPException(status_code=400, detail="description is required")
 
-    new_magazine = magazines_collection.get_magazine_by_id(magazine_id)
+    new_magazine = magazines_collection.get_magazine_by_id(body['magazine_id'])
 
     # edit magazine by id
     if body['title'] != '':
         new_magazine.set_name(body['title'])
-
+    
     if body['description'] != '':
         new_magazine.set_description(body['description'])
 
@@ -79,6 +79,8 @@ async def edit_magazine():
     if body['remove_roadtrip_id'] != '':    
         new_magazine.remove_roadtrip_id(body['remove_roadtrip_id'])
     
-    return {"message":"magazine edited successfully"}
+    return {"message":"magazine edited successfully",
+            "new_magazine": new_magazine
+    }
 
 
