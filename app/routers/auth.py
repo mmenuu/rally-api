@@ -55,5 +55,6 @@ async def register(body: dict):
 
 @router.post("/login", status_code=status.HTTP_200_OK)
 async def login(body: dict):
-    # TODO implement login
+    # TODO implement login.
+    # verify if user exists in the database and return a JWT token.
     pass
