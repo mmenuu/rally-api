@@ -15,6 +15,7 @@ router = APIRouter(
     dependencies=[Depends(get_token_header)]
 )
 
+
 @router.get("/")
 async def read_roadtrips():
     '''
@@ -57,33 +58,24 @@ async def create_roadtrip(body: dict):
     if not body:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Body is required")
-    if not body['title']:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Title is required")
-    if not body['sub_title']:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Sub title is required")
-    if not body['description']:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Description is required")
-    if not body['category']:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Category is required")
-    if not body['summary']:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Summary is required")
     if not body['user_id']:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="User id is required")
 
     new_roadtrip = Roadtrip(
-        title=body['title'],
-        sub_title=body['sub_title'],
-        description=body['description'],
-        category=body['category'],
-        summary=body['summary'],
         user_id=body['user_id']
     )
+
+    if body['title']:
+        new_roadtrip.set_title(body['title'])
+    if body['sub_title']:
+        new_roadtrip.set_sub_title(body['sub_title'])
+    if body['description']:
+        new_roadtrip.set_description(body['description'])
+    if body['category']:
+        new_roadtrip.set_category(body['category'])
+    if body['summary']:
+        new_roadtrip.set_summary(body['summary'])
 
     roadtrips_collection.add_roadtrip(new_roadtrip)
 
@@ -92,8 +84,85 @@ async def create_roadtrip(body: dict):
     }
 
 
-@router.put("/{roadtrip_id}")
+@router.patch("/{roadtrip_id}")
 async def update_roadtrip(roadtrip_id: str, body: dict):
-    # TODO implement update roadtrip by id.
-    # find roadtrip by id and update it
-    pass
+    '''
+    # Update a roadtrip
+    ### request body
+    - title: `str` optional
+    - sub_title: `str` optional
+    - description: `str` optional
+    - category: `str` optional
+    - summary: `str` optional
+    - user_id: `str` required
+    '''
+
+    # validate body
+    if not body:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Body is required")
+    if not body['user_id']:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="User id is required")
+
+    roadtrip_exists = roadtrips_collection.get_roadtrip_by_id(roadtrip_id)
+
+    if roadtrip_exists is None:
+        raise HTTPException(status_code=404, detail="Roadtrip not found")
+
+    if body['title']:
+        roadtrip_exists.set_title(body['title'])
+    if body['sub_title']:
+        roadtrip_exists.set_sub_title(body['sub_title'])
+    if body['description']:
+        roadtrip_exists.set_description(body['description'])
+    if body['category']:
+        roadtrip_exists.set_category(body['category'])
+    if body['summary']:
+        roadtrip_exists.set_summary(body['summary'])
+
+    roadtrips_collection.update_roadtrip(
+        roadtrip_exists.get_id(), roadtrip_exists)
+
+    return {
+        "detail": "Roadtrip updated successfully",
+    }
+
+
+@router.patch("/{roadtrip_id}/waypoints")
+async def update_roadtrip_waypoints(roadtrip_id: str, body: dict):
+    '''
+    # Update a roadtrip waypoints
+    ### request body
+    - waypoints: `list` required
+    '''
+
+    # validate body
+    if not body:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Body is required")
+    if not body['waypoints']:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Waypoints are required")
+
+    roadtrip_exists = roadtrips_collection.get_roadtrip_by_id(roadtrip_id)
+
+    if roadtrip_exists is None:
+        raise HTTPException(status_code=404, detail="Roadtrip not found")
+
+    roadtrips_collection.update_waypoints_by_id(roadtrip_id, body['waypoints'])
+
+    return {
+        "detail": "Roadtrip waypoints updated successfully",
+    }
+
+
+@ router.delete("/{roadtrip_id}")
+async def delete_roadtrip(roadtrip_id: str):
+
+    if not roadtrips_collection.remove_roadtrip_by_id(roadtrip_id):
+        raise HTTPException(status_code=404, detail="Roadtrip not found")
+
+    return {
+        "detail": "Roadtrip deleted successfully",
+    }
