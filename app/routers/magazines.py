@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException, status, Depends
+
 from ..dependencies import get_token_header
 from ..databases import magazines_collection
 from ..internal.magazine import Magazine

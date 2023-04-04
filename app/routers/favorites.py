@@ -2,11 +2,10 @@ from fastapi import APIRouter, HTTPException, status, Depends
 
 from ..databases import favorite_collection
 from ..dependencies import get_token_header
-from ..internal.favorite_catalog import FavoriteCatalog
-from ..internal.favorite_landmark import FavoriteLandmark
 
 router = APIRouter(
     prefix="/favorites",
+    tags=["favorites"],
     responses={
         404: {
             'message': 'Not Found'
