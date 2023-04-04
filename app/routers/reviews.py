@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, HTTPException, status, Depends
 
 from ..dependencies import get_token_header
 from ..databases import reviews_collection
@@ -21,6 +21,8 @@ async def read_reviews():
     # get all review
     '''
     result = reviews_collection.get_reviews()
+    if not result:
+        raise HTTPException(status_code=404, detail="No reviews found")
     return result 
 
 @router.post('/')
@@ -38,13 +40,13 @@ async def create_review(body: dict):
     if not body:
         return HTTPException(status_code=400, detail="Body is required")
     if not body['review_text']:
-        return HTTPException(status_code=400, detail="title is required")
+        return HTTPException(status_code=400, detail="review_text is required")
     if not body['reviewer']:
-        return HTTPException(status_code=400, detail="description is required")
+        return HTTPException(status_code=400, detail="reviewer(user_id) is required")
     if not body['landmark_id']:
-        return HTTPException(status_code=400, detail="description is required")
+        return HTTPException(status_code=400, detail="landmark_id is required")
     if not body['rating']:
-        return HTTPException(status_code=400, detail="description is required")
+        return HTTPException(status_code=400, detail="rating is required")
 
     new_review = Review(
         review_text = body["review_text"], 
@@ -74,9 +76,9 @@ async def edit_review(body: dict):
     if not body:
         return HTTPException(status_code=400, detail="Body is required")
     if not body['review_text']:
-        return HTTPException(status_code=400, detail="title is required")
+        return HTTPException(status_code=400, detail="reviewe_text is required")
     if not body['reviewer']:
-        return HTTPException(status_code=400, detail="reviewer is required")
+        return HTTPException(status_code=400, detail="reviewer(user_id) is required")
     if not body['landmark_id']:
         return HTTPException(status_code=400, detail="landmark_id is required")
     if not body['rating']:

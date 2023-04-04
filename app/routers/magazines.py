@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, HTTPException, status, Depends
 from ..dependencies import get_token_header
 from ..databases import magazines_collection
 from ..internal.magazine import Magazine
@@ -48,6 +48,8 @@ async def read_magazine():
     # get all magazine
     '''
     result = magazines_collection.get_magazines()
+    if not result:
+        raise HTTPException(status_code=404, detail="No magazines found")
     return result
 
 @router.put("/")
@@ -72,9 +74,9 @@ async def edit_magazine(body: dict):
     if not body['description']:
         return HTTPException(status_code=400, detail="description is required")
     if not body['add_roadtrip_id']:
-        return HTTPException(status_code=400, detail="description is required")
+        return HTTPException(status_code=400, detail="add_roadtrip_id is required")
     if not body['remove_roadtrip_id']:
-        return HTTPException(status_code=400, detail="description is required")
+        return HTTPException(status_code=400, detail="remove_roadtrip_id is required")
 
 
     new_magazine = magazines_collection.get_magazine_by_id(body['magazine_id'])
