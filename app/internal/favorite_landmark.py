@@ -1,7 +1,7 @@
 class FavoriteLandmark:
     def __init__(self, user_id):
         self.__user_id = user_id
-        self.__landmarks = [] # list of landmark object
+        self.__landmarks = [] # list of landmark id
     
     def get_user_id(self):
         return self.__user_id

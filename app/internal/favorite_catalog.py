@@ -2,7 +2,7 @@ from app.internal.favorite_landmark import FavoriteLandmark
 
 class FavoriteCatalog:
     def __init__(self):
-        self.__favorite_landmarks = [FavoriteLandmark]
+        self.__favorite_landmarks = []
     
     def add_favorite_landmark(self, favorite_landmark: FavoriteLandmark):
         self.__favorite_landmarks.append(favorite_landmark)
