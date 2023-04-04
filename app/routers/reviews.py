@@ -7,6 +7,7 @@ review_collection = ReviewCatalog()
 
 router = APIRouter(  
     prefix="/reviews",
+    tags=["reviews"],
     responses={
         404: {
             'message': 'Not Found'

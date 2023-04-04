@@ -6,6 +6,7 @@ from ..internal.magazine import Magazine
 
 router = APIRouter(
     prefix="/magazines",
+    tags=["magazines"],
     responses={
         404: {
             'message': 'Not Found'
