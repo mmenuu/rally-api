@@ -89,7 +89,6 @@ async def create_roadtrip(body: dict):
 
     return {
         "detail": "Roadtrip created successfully",
-        "roadtrip": new_roadtrip
     }
 
 
