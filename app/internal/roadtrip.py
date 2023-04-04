@@ -1,16 +1,16 @@
-from app.internal.waypoint import Waypoint
+from .waypoint import Waypoint
 import uuid
 
 class Roadtrip:
     '''A roadtrip is a collection of waypoints'''
 
-    def __init__(self, user_id: str, title: str, sub_title: str, description: str, waypoints: list(Waypoint), category: str, summary: str):
+    def __init__(self, user_id: str, title: str, sub_title: str, description: str, category: str, summary: str):
         self.__id = str(uuid.uuid4())
         self.__author = user_id
         self.__title = title
         self.__sub_title = sub_title
         self.__description = description
-        self.__waypoints = waypoints
+        self.__waypoints = list()
         self.__category = category
         self.__summary = summary
 
@@ -62,7 +62,7 @@ class Roadtrip:
         '''Set the description of the roadtrip'''
         self.__description = description
 
-    def set_waypoints(self, waypoints: list(Waypoint)):
+    def set_waypoints(self, waypoints: list):
         '''Set all waypoints from the roadtrip'''
         self.__waypoints = waypoints
 
@@ -85,7 +85,7 @@ class Roadtrip:
                 return waypoint
 
         return None  # Waypoint ID has not been found.
-
+    
     def remove_waypoint_by_id(self, waypoint_id: str):
         '''Remove a waypoint from the roadtrip'''
         waypoint = self.get_waypoint_by_id(waypoint_id)

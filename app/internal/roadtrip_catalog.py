@@ -1,11 +1,11 @@
-from app.internal.roadtrip import Roadtrip
+from .roadtrip import Roadtrip
 
 import re
 
 
 class RoadtripCatalog:
     def __init__(self):
-        self.__roadtrips = [Roadtrip]
+        self.__roadtrips = []
 
     def get_roadtrips(self):
         '''Get all roadtrips from the catalog'''
@@ -40,6 +40,16 @@ class RoadtripCatalog:
         '''Add a roadtrip to the catalog'''
         self.__roadtrips.append(roadtrip)
 
+    def update_waypoints_by_id(self, roadtrip_id: str, waypoints: list):
+        '''Update all waypoints from a roadtrip by roadtrip id'''
+        roadtrip = self.get_roadtrip_by_id(roadtrip_id)
+
+        if roadtrip is not None:
+            roadtrip.set_waypoints(waypoints)
+            return True
+        
+        return False
+        
     def remove_roadtrip_by_id(self, roadtrip_id: str):
         '''Remove a roadtrip by roadtrip id from the catalog'''
         roadtrip = self.get_roadtrip_by_id(roadtrip_id)
