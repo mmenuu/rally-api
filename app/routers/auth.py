@@ -97,9 +97,6 @@ async def get_current_active_user(
 
 @router.post("/register", response_model=Token, status_code=status.HTTP_201_CREATED)
 async def register(body: dict):
-    # TODO implement register and Return a JWT token.
-    # verify if user already exists in the database.
-
     '''
     # Register a new user
 
