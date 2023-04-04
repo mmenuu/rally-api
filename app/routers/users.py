@@ -16,6 +16,7 @@ router = APIRouter(  # กำหนด instance
 
 
 @router.post("/")
+@router.post("/")
 async def register(body: dict):
     new_user = User(
         email=body["email"],
@@ -28,6 +29,7 @@ async def register(body: dict):
     return {"message": "User created successfully"}
 
 
+@router.get('/')
 @router.get('/')
 async def read_users():
     result = user_storage.get_users()
