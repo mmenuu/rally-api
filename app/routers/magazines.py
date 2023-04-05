@@ -57,7 +57,7 @@ async def read_magazine():
     return result
 
 
-@router.get("/{magazine_id}")
+@router.get("/{magazine_id}") # get all roadtrip from magazine tag
 async def get_magazine_by_id(magazine_id:str):
     '''
     # get magazine by id
@@ -75,7 +75,7 @@ async def get_magazine_by_id(magazine_id:str):
 
 
 
-@router.patch("/{magazine_id}")
+@router.patch("/{magazine_id}") # update magazine
 async def update_magazine(magazine_id:str, body: dict):
     '''
     #edit magazine by id
@@ -109,7 +109,7 @@ async def update_magazine(magazine_id:str, body: dict):
     }
 
 
-@router.patch("/{magazine_id}/add_roadtrip")
+@router.patch("/{magazine_id}/add_roadtrip") # add magazine to roadtrip
 async def add_magazine(magazine_id: str, body: dict):
     '''
     # Update a magazine roadtrip
