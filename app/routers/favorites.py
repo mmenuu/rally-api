@@ -53,8 +53,8 @@ async def add_favorite_landmark(user_id: str, body: dict):
         raise HTTPException(status_code=400, detail="new_landmark is required")
 
     new_landmark = Landmark(
+        id=body['favorite_landmark']['id'],
         name=body['favorite_landmark']['name'],
-        description=body['favorite_landmark']['description'],
         amenity=body['favorite_landmark']['amenity'],
         location=body['favorite_landmark']['location'],
         opening_hours=body['favorite_landmark']['opening_hours']
@@ -66,7 +66,21 @@ async def add_favorite_landmark(user_id: str, body: dict):
     }
 
 
-@router.delete("/{user_id}")
-async def delete_favorite_landmark(user_id: str, body: dict):
-    # TODO: delete favorite landmark by id
-    pass
+# @router.delete("/{user_id}")
+# async def delete_favorite_landmark(user_id: str, body: dict):
+#     user_exists = users_collection.get_user_by_id(user_id)
+#     if user_exists is None:
+#         raise HTTPException(status_code=404, detail="User not found")
+
+#     if not body:
+#         raise HTTPException(status_code=400, detail="Body is required")
+
+#     if not body['favorite_landmark']:
+#         raise HTTPException(status_code=400, detail="landmark is required")
+
+    
+#     landmark_id = body["landmark_id"]
+#     user_exists.remove_favorite_landmark(landmark_id)
+#     return {
+#         "detail": "Favorite landmark added successfully",
+#     }
