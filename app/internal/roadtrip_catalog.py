@@ -45,6 +45,8 @@ class RoadtripCatalog:
         roadtrip = self.get_roadtrip_by_id(roadtrip_id)
 
         if roadtrip is not None:
+
+
             roadtrip.set_waypoints(waypoints)
             return True
         
