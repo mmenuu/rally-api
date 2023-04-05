@@ -1,5 +1,6 @@
-fastapi
-uvicorn
-uuid
+fastapi[all]
 autopep8
-pydantic
+uuid
+python-jose[cryptography]
+passlib[bcrypt]
+python-dotenv

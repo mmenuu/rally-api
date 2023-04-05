@@ -1,46 +1,51 @@
-from fastapi import APIRouter, HTTPException, status
-from ..databases import users_collection
-from ..internal.landmark import Landmark
+from fastapi import APIRouter, HTTPException, status, Depends
+
+from ..databases import favorite_collection
+from ..dependencies import get_token_header
 
 router = APIRouter(
     prefix="/favorites",
+    tags=["favorites"],
     responses={
         404: {
             'message': 'Not Found'
         }
-    }
+    },
+    dependencies=[Depends(get_token_header)]
 )
 
 
-@router.get("/{user_id}")
-async def read_favorites(user_id: str):
-    user = users_collection.get_user_by_id(user_id=user_id)
-    if user is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"User with id {user_id} not found")
-
-    return user.get_favorite_landmarks()
+@router.get("/")
+async def read_favorites():
+    '''
+    # get all favorite_landmark
+    '''
+    result = favorite_collection.get_favorite_landmarks()
+    if not result:
+        raise HTTPException(
+            status_code=404, detail="No favorite_landmark found")
+    return result
 
 
 @router.post("/")
 async def add_favorites(body: dict):
+    '''
+    # add favorite landmark to store in system
+    ### request body
+    - user_id: `str`
+    - new_landmark: `str` # landmark_id
+    '''
+    # validate body
+    if not body:
+        raise HTTPException(status_code=400, detail="Body is required")
+    if not body['user_id']:
+        raise HTTPException(status_code=400, detail="user_id is required")
+    if not body['new_landmark']:
+        raise HTTPException(status_code=400, detail="landmark_id is required")
+
     user_id = body["user_id"]
-    landmark = body["landmark"]
+    new_landmark = body["new_landmark"]
+    output = favorite_collection.add_favorite_landmark_by_user_id(
+        user_id=user_id, new_landmark=new_landmark)
 
-    user = users_collection.get_user_by_id(user_id=user_id)
-
-    if user is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"User with id {user_id} not found")
-
-    user.add_favorite_landmark(landmark)
-    return user.get_favorite_landmarks()
-
-
-@router.delete('/')
-async def remove_favorites(body: dict):
-    user_id = body["user_id"]
-    landmark = body["landmark"]
-    user = users_collection.get_user_by_id(user_id=user_id)
-    output = user.remove_favorite_landmark_by_id(landmark)
     return output

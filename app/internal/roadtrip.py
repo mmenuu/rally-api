@@ -4,15 +4,15 @@ import uuid
 class Roadtrip:
     '''A roadtrip is a collection of waypoints'''
 
-    def __init__(self, user_id: str, title: str, sub_title: str, description: str, category: str, summary: str):
+    def __init__(self, user_id: str):
         self.__id = str(uuid.uuid4())
         self.__author = user_id
-        self.__title = title
-        self.__sub_title = sub_title
-        self.__description = description
+        self.__title = ''
+        self.__sub_title = ''
+        self.__description = ''
         self.__waypoints = list()
-        self.__category = category
-        self.__summary = summary
+        self.__category = ''
+        self.__summary = ''
 
     def get_id(self):
         '''Get the ID of the roadtrip'''
