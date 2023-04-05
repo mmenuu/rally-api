@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 
-from ..databases import favorite_collection
+
 from ..dependencies import get_token_header
 
 router = APIRouter(
