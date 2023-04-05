@@ -1,4 +1,5 @@
 from app.internal.roadtrip import Roadtrip
+from app.internal.roadtrip_catalog import RoadtripCatalog
 import uuid
 
 class Magazine:
@@ -25,20 +26,3 @@ class Magazine:
 
     def get_id(self):
         return self.__id
-
-    def get_roadtrip_by_id(self, roadtrip_id: str):
-        for roadtrip in self.get_roadtrips():
-            if roadtrip == roadtrip_id:
-                return roadtrip
-
-        return None
-
-    def add_roadtrip(self, roadtrip_id: str):
-        self.__roadtrips.append(roadtrip_id)
-
-    def remove_roadtrip(self, roadtrip_id: str):
-        roadtrip = self.get_roadtrip_by_id(roadtrip_id)
-        if roadtrip is not None:
-            self.__roadtrips.remove(roadtrip)
-
-        return False

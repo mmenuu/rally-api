@@ -11,6 +11,7 @@ class Roadtrip:
         self.__sub_title = ''
         self.__description = ''
         self.__waypoints = list()
+        self.__magazine_id = list()
         self.__category = ''
         self.__summary = ''
 

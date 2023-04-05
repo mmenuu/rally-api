@@ -16,7 +16,7 @@ router = APIRouter(
 )
 
 
-@router.post("/")
+@router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_magazine(body: dict):
     '''
     # create new magazine
@@ -42,6 +42,7 @@ async def create_magazine(body: dict):
 
     return {
         "detail": "User created successfully",
+        "detail": new_magazine
     }
 
 
@@ -56,47 +57,95 @@ async def read_magazine():
     return result
 
 
-@router.put("/")
-async def edit_magazine(body: dict):
+@router.get("/{magazine_id}")
+async def get_magazine_by_id(magazine_id:str):
+    '''
+    # get magazine by id
+    '''
+    # validate magazine_id
+    if not magazine_id:
+        raise HTTPException(status_code=400, detail="magazine_id is required")
+        
+    new_magazine = magazines_collection.get_magazine_by_id(magazine_id)
+
+    if not new_magazine:
+        raise HTTPException(status_code=404, detail="No magazines found")
+        
+    return new_magazine
+
+
+
+@router.patch("/{magazine_id}")
+async def update_magazine(magazine_id:str, body: dict):
     '''
     #edit magazine by id
     ### request body
-     - magazine_id: `str`
-     - title: `str`
-     - description: `str`
-     - add_roadtrip_id: `str`
-     - remove_roadtrip_id: `str`
+     - magazine_id: `str` required
+     - title: `str` optional
+     - description: `str` optional
     '''
 
     # validate body
     if not body:
         raise HTTPException(status_code=400, detail="Body is required")
-    if not body['magazine_id']:
+    if not magazine_id:
         raise HTTPException(status_code=400, detail="magazine_id is required")
-    if not body['title']:
-        raise HTTPException(status_code=400, detail="title is required")
-    if not body['description']:
-        raise HTTPException(status_code=400, detail="description is required")
 
-    new_magazine = magazines_collection.get_magazine_by_id(body['magazine_id'])
+    new_magazine = magazines_collection.get_magazine_by_id(magazine_id)
+    if new_magazine is None:
+        raise HTTPException(status_code=404, detail= "Magazine not found")
 
     # edit magazine by id
-    # not sure how to edit magazine
-    if body['title'] != '':
+    if body['title']:
         new_magazine.set_name(body['title'])
-
-    if body['description'] != '':
+    if body['description']:
         new_magazine.set_description(body['description'])
 
-    if body['add_roadtrip_id'] != '':
-        new_magazine.add_roadtrip_id(body['add_roadtrip_id'])
-
-    if body['remove_roadtrip_id'] != '':
-        new_magazine.remove_roadtrip_id(body['remove_roadtrip_id'])
+    magazines_collection.update_magazine_by_id(new_magazine.get_id(), new_magazine)
 
     return {
         "detail": "magazine edited successfully",
+        "detail": new_magazine
     }
+
+
+@router.patch("/{magazine_id}/add_roadtrip")
+async def add_magazine(magazine_id: str, body: dict):
+    '''
+    # Update a magazine roadtrip
+    ### request body
+    - roadtrip_id: `str` # roadtrip_id
+    '''
+    # validate body
+    if not body:
+        raise HTTPException(status_code=400, detail="Body is required")
+    if not magazine_id:
+        raise HTTPException(status_code=400, detail="magazine_id is required")
+    if not body['roadtrip_id']:
+        raise HTTPException(status_code=400, detail="roadtrip is required")
+
+    magazines_collection.add_roadtrip(magazine_id, body['roadtrip_id'])
+    new_magazine = magazines_collection.get_magazine_by_id(magazine_id)
+    return{
+        "detail": "add_roadtrip_successfully",
+        "detail": new_magazine
+    }
+@router.delete("/{magazine_id}")
+async def delete_roadtrip(roadtrip_id: str, body: dict):
+    '''
+    #delete roadtrip from magazine
+    request body
+    - roadtrip_id: `str`
+    '''
+    # validate roadtrip
+    if not body:
+        raise HTTPException(status_code=400, detail="Body is required")
+    if not magazine_id:
+        raise HTTPException(status_code=400, detail="magazine_id is required")
+    if not body['roadtrip']:
+        raise HTTPException(status_code=400, detail="roadtrip is required")
+
+    magazines_collection.remove_roadtrip(magazine_id, roadtrip_id)
 
 
 @router.delete("/")
@@ -118,3 +167,4 @@ async def delete_magazine(body: dict):
     return {
         "detail": "Magazine deleted successfully"
     }
+ 
