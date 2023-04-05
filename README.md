@@ -33,3 +33,10 @@ python -m pip install -r requirements.txt
 ```bash
 python -m uvicorn app.main:app --host 0.0.0.0 --port 3000 --reload
 ```
+
+## Example .env file
+```bash
+SECRET_KEY =
+ALGORITHM = 
+ACCESS_TOKEN_EXPIRE_MINUTES =
+```
