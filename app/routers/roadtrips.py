@@ -3,6 +3,7 @@ from fastapi import APIRouter, HTTPException, status, Depends
 from ..databases import roadtrips_collection
 from ..dependencies import get_token_header
 from ..internal.roadtrip import Roadtrip
+from ..internal.waypoint import Waypoint
 
 router = APIRouter(
     prefix="/roadtrips",
@@ -167,7 +168,18 @@ async def update_roadtrip_waypoints(roadtrip_id: str, body: dict):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Roadtrip not found")
 
-    roadtrips_collection.update_waypoints_by_id(roadtrip_id, body['waypoints'])
+    waypoints = []
+    for waypoint in body['waypoints']:
+        waypoints.append(Waypoint(
+            id=waypoint['id'],
+            name=waypoint['name'],
+            position=waypoint['position'],
+            description=waypoint['description'],
+            note=waypoint['note'],
+            amenity=waypoint['amenity'],
+        ))
+
+    roadtrips_collection.update_waypoints_by_id(roadtrip_id, waypoints)
 
     return {
         "detail": "Roadtrip waypoints updated successfully",

@@ -11,7 +11,7 @@ class Roadtrip:
         self.__sub_title = ''
         self.__description = ''
         self.__waypoints = list()
-        self.__magazine_id = list()
+        self.__magazines_id = list()
         self.__category = ''
         self.__summary = ''
 
@@ -96,3 +96,19 @@ class Roadtrip:
             return True
 
         return False  # Waypoint ID has not been found.
+    
+    def get_magazines_id(self):
+        '''Get the magazines ID'''
+        return self.__magazines_id
+    
+    def set_magazines_id(self, magazines_id: list):
+        '''Set the magazines ID'''
+        self.__magazines_id = magazines_id
+
+    def add_magazine_id(self, magazine_id: str):
+        '''Add a magazine ID'''
+        self.__magazines_id.append(magazine_id)
+
+    def remove_magazine_id(self, magazine_id: str):
+        '''Remove a magazine ID'''
+        self.__magazines_id.remove(magazine_id)
