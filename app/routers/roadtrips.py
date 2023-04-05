@@ -36,7 +36,8 @@ async def read_roadtrip(roadtrip_id: str):
     roadtrip_exists = roadtrips_collection.get_roadtrip_by_id(roadtrip_id)
 
     if roadtrip_exists is None:
-        raise HTTPException(status_code=404, detail="Roadtrip not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Roadtrip not found")
 
     return roadtrip_exists
 
@@ -108,7 +109,8 @@ async def update_roadtrip(roadtrip_id: str, body: dict):
     roadtrip_exists = roadtrips_collection.get_roadtrip_by_id(roadtrip_id)
 
     if roadtrip_exists is None:
-        raise HTTPException(status_code=404, detail="Roadtrip not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Roadtrip not found")
 
     if body['title']:
         roadtrip_exists.set_title(body['title'])
@@ -127,6 +129,20 @@ async def update_roadtrip(roadtrip_id: str, body: dict):
     return {
         "detail": "Roadtrip updated successfully",
     }
+
+
+@router.get("/{roadtrip_id}/waypoints")
+async def read_roadtrip_waypoints(roadtrip_id: str):
+    '''
+    # Get a roadtrip waypoints by id
+    '''
+    roadtrip_exists = roadtrips_collection.get_roadtrip_by_id(roadtrip_id)
+
+    if roadtrip_exists is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Roadtrip not found")
+
+    return roadtrip_exists.get_waypoints()
 
 
 @router.patch("/{roadtrip_id}/waypoints")
@@ -148,7 +164,8 @@ async def update_roadtrip_waypoints(roadtrip_id: str, body: dict):
     roadtrip_exists = roadtrips_collection.get_roadtrip_by_id(roadtrip_id)
 
     if roadtrip_exists is None:
-        raise HTTPException(status_code=404, detail="Roadtrip not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Roadtrip not found")
 
     roadtrips_collection.update_waypoints_by_id(roadtrip_id, body['waypoints'])
 
@@ -161,7 +178,8 @@ async def update_roadtrip_waypoints(roadtrip_id: str, body: dict):
 async def delete_roadtrip(roadtrip_id: str):
 
     if not roadtrips_collection.remove_roadtrip_by_id(roadtrip_id):
-        raise HTTPException(status_code=404, detail="Roadtrip not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Roadtrip not found")
 
     return {
         "detail": "Roadtrip deleted successfully",
