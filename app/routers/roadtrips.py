@@ -24,8 +24,7 @@ async def read_roadtrips():
     '''
     # Get all roadtrips
     '''
-    roadtrips_exits = roadtrips_collection.get_roadtrips()
-    return roadtrips_exits
+    return roadtrips_collection.get_roadtrips()
 
 
 @router.get("/{roadtrip_id}", status_code=status.HTTP_200_OK)
@@ -55,8 +54,6 @@ async def create_roadtrip(body: dict, current_user: Annotated[User, Depends(get_
     - category: `str`
     - summary: `str`
     '''
-
-    # validate body
     if not body:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Body is required")
@@ -100,7 +97,6 @@ async def update_roadtrip(roadtrip_id: str, body: dict, current_user: Annotated[
     - summary: `str` optional
     '''
 
-    # validate body
     if not body:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Body is required")

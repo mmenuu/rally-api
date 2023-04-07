@@ -21,14 +21,7 @@ async def read_users():
     # Get all users
     '''
 
-    # get all users
-    users_exists = users_collection.get_users()
-
-    # check if users exist
-    if not users_exists:
-        raise HTTPException(status_code=404, detail="No users found")
-
-    return users_exists
+    return users_collection.get_users()
 
 
 @router.get('/profile', status_code=status.HTTP_200_OK)

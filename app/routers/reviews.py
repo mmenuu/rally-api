@@ -19,10 +19,7 @@ async def read_reviews():
     '''
     # get all review
     '''
-    result = reviews_collection.get_reviews()
-    if not result:
-        raise HTTPException(status_code=404, detail="No reviews found")
-    return result 
+    return reviews_collection.get_reviews()
 
 @router.post('/')
 async def create_review(body: dict):
