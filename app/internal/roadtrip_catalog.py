@@ -17,7 +17,7 @@ class RoadtripCatalog:
             if roadtrip.get_id() == roadtrip_id:
                 return roadtrip
 
-        return None  # Roadtrip ID has not been found.
+        return None # not found
 
     def get_roadtrips_by_user_id(self, user_id: str):
         '''Get all roadtrips from a user id'''
@@ -40,40 +40,6 @@ class RoadtripCatalog:
         '''Add a roadtrip to the catalog'''
         self.__roadtrips.append(roadtrip)
 
-    def update_roadtrip_by_id(self, roadtrip_id: str, roadtrip: Roadtrip):
-        '''Update a roadtrip by roadtrip id'''
-        roadtrip_exists = self.get_roadtrip_by_id(roadtrip_id)
-
-        if roadtrip_exists is not None:
-            roadtrip_exists.set_title(roadtrip.get_title())
-            roadtrip_exists.set_sub_title(roadtrip.get_sub_title())
-            roadtrip_exists.set_description(roadtrip.get_description())
-            roadtrip_exists.set_category(roadtrip.get_category())
-            roadtrip_exists.set_summary(roadtrip.get_summary())
-            roadtrip_exists.set_author(roadtrip.get_author())
-            roadtrip_exists.set_waypoints(roadtrip.get_waypoints())
-            return True
-
-        return False
-
-    def update_waypoints_by_id(self, roadtrip_id: str, waypoints: list):
-        '''Update all waypoints from a roadtrip by roadtrip id'''
-        roadtrip = self.get_roadtrip_by_id(roadtrip_id)
-
-        if roadtrip is not None:
-
-
-            roadtrip.set_waypoints(waypoints)
-            return True
-        
-        return False
-        
-    def remove_roadtrip_by_id(self, roadtrip_id: str):
-        '''Remove a roadtrip by roadtrip id from the catalog'''
-        roadtrip = self.get_roadtrip_by_id(roadtrip_id)
-
-        if roadtrip is not None:
-            self.__roadtrips.remove(roadtrip)
-            return True
-
-        return False
+    def remove_roadtrip(self, roadtrip: Roadtrip):
+        '''Remove a roadtrip from the catalog'''
+        self.__roadtrips.remove(roadtrip)

@@ -75,28 +75,6 @@ class Roadtrip:
         '''Set the summary of the roadtrip'''
         self.__summary = summary
 
-    def add_waypoint(self, new_waypoint: Waypoint):
-        '''Add a waypoint to the roadtrip'''
-        self.__waypoints.append(new_waypoint)
-
-    def get_waypoint_by_id(self, waypoint_id: str):
-        '''Get a waypoint from the roadtrip'''
-        for waypoint in self.get_waypoints():
-            if waypoint.get_id() == waypoint_id:
-                return waypoint
-
-        return None  # Waypoint ID has not been found.
-    
-    def remove_waypoint_by_id(self, waypoint_id: str):
-        '''Remove a waypoint from the roadtrip'''
-        waypoint = self.get_waypoint_by_id(waypoint_id)
-
-        if waypoint is not None:
-            self.__waypoints.remove(waypoint)
-            return True
-
-        return False  # Waypoint ID has not been found.
-    
     def get_magazines_id(self):
         '''Get the magazines ID'''
         return self.__magazines_id

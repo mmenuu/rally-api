@@ -1,6 +1,5 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 
-from ..dependencies import get_token_header
 from ..databases import reviews_collection
 from ..internal.review import Review 
 
@@ -13,7 +12,6 @@ router = APIRouter(
             'message': 'Not Found'
         }
     },
-    dependencies=[Depends(get_token_header)]    
 )
 
 @router.get('/')

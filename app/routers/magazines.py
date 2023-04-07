@@ -1,6 +1,5 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 
-from ..dependencies import get_token_header
 from ..databases import magazines_collection
 from ..internal.magazine import Magazine
 
@@ -12,7 +11,6 @@ router = APIRouter(
             'message': 'Not Found'
         }
     },
-    dependencies=[Depends(get_token_header)]
 )
 
 

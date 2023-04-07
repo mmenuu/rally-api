@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-
+from typing import Annotated
+from ..internal.user import User
 from ..databases import users_collection
-from ..dependencies import get_token_header
+from ..dependencies import get_current_user
 
 router = APIRouter(
     prefix="/users",
-    dependencies=[Depends(get_token_header)],
     tags=["users"],
     responses={
         404: {
@@ -17,7 +17,9 @@ router = APIRouter(
 
 @router.get('/', status_code=status.HTTP_200_OK)
 async def read_users():
-    '''Get all users'''
+    '''
+    # Get all users
+    '''
 
     # get all users
     users_exists = users_collection.get_users()
@@ -29,10 +31,20 @@ async def read_users():
     return users_exists
 
 
+@router.get('/profile', status_code=status.HTTP_200_OK)
+async def read_profile(current_user: Annotated[User, Depends(get_current_user)]):
+    '''
+    # Get profile
+    '''
+    return current_user
+
+
 @router.get('/{user_id}', status_code=status.HTTP_200_OK)
 async def read_user(user_id: str):
-    '''Get a user by id'''
-
+    '''
+    # Get a user by id
+    @param user_id: `str` id of the user
+    '''
     # get user by id
     user_exists = users_collection.get_user_by_id(user_id)
 
