@@ -138,9 +138,9 @@ async def update_roadtrip(roadtrip_id: str, body: dict, current_user: Annotated[
 
 
 @router.delete("/{roadtrip_id}", status_code=status.HTTP_200_OK)
-async def delete_roadtrip(roadtrip_id: str, current_user: Annotated[User, Depends(get_current_user)]):
+async def remove_roadtrip(roadtrip_id: str, current_user: Annotated[User, Depends(get_current_user)]):
     '''
-    # Delete a roadtrip
+    # Remove a roadtrip
 
     @param roadtrip_id: `str` id of the roadtrip
     '''

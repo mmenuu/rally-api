@@ -19,6 +19,5 @@ class User(Account):
                 return landmark
         return None
 
-    def remove_favorite_landmark_by_id(self, landmark_id: str):
-        self.__favorite_landmarks.remove(landmark_id)
-        return self.__favorite_landmarks
+    def remove_favorite_landmark(self, landmark: Landmark):
+        self.__favorite_landmarks.remove(landmark)
