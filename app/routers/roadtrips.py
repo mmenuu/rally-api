@@ -1,7 +1,7 @@
 from typing import Annotated
 from fastapi import APIRouter, HTTPException, status, Depends
 
-from ..databases import roadtrips_collection
+from ..databases import roadtrips_collection, magazines_collection
 from ..dependencies import get_current_user
 
 from ..internal.roadtrip import Roadtrip
@@ -95,6 +95,8 @@ async def update_roadtrip(roadtrip_id: str, body: dict, current_user: Annotated[
     - description: `str` optional
     - category: `str` optional
     - summary: `str` optional
+    - waypoints: `list` optional
+    - magazine_id: `str` optional
     '''
 
     if not body:
@@ -127,6 +129,17 @@ async def update_roadtrip(roadtrip_id: str, body: dict, current_user: Annotated[
         except Exception as e:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST, detail=f"Invalid waypoints: {e}")
+    if body.get('magazine_id'):
+        magazine_exists = magazines_collection.get_magazine_by_id(
+            body.get('magazine_id'))
+        if magazine_exists is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="Magazine not found")
+
+        if body.get('magazine_id') not in roadtrip_exists.get_magazines_id():
+            roadtrip_exists.add_magazine_id(magazine_exists.get_id())
+        else:
+            roadtrip_exists.remove_magazine_id(magazine_exists.get_id())
 
     return {
         "detail": "Roadtrip updated successfully",
@@ -150,7 +163,7 @@ async def remove_roadtrip(roadtrip_id: str, current_user: Annotated[User, Depend
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN, detail="You don't have permission to delete this roadtrip")
 
-    roadtrips_collection.remove_roadtrip(roadtrip_exists)
+    roadtrips_collection.remove_roadtrip(roadtrip_exists.get_id())
 
     return {
         "detail": "Roadtrip deleted successfully",
