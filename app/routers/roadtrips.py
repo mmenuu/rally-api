@@ -124,7 +124,7 @@ async def update_roadtrip(roadtrip_id: str, body: dict):
     if body['summary']:
         roadtrip_exists.set_summary(body['summary'])
 
-    roadtrips_collection.update_roadtrip(
+    roadtrips_collection.update_roadtrip_by_id(
         roadtrip_exists.get_id(), roadtrip_exists)
 
     return {
@@ -167,19 +167,9 @@ async def update_roadtrip_waypoints(roadtrip_id: str, body: dict):
     if roadtrip_exists is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Roadtrip not found")
-
-    waypoints = []
-    for waypoint in body['waypoints']:
-        waypoints.append(Waypoint(
-            id=waypoint['id'],
-            name=waypoint['name'],
-            position=waypoint['position'],
-            description=waypoint['description'],
-            note=waypoint['note'],
-            amenity=waypoint['amenity'],
-        ))
-
-    roadtrips_collection.update_waypoints_by_id(roadtrip_id, waypoints)
+    
+    waypoints = list(map(lambda waypoint: Waypoint(**waypoint), body['waypoints']))
+    roadtrips_collection.update_waypoints_by_id(roadtrip_exists.get_id(), waypoints)
 
     return {
         "detail": "Roadtrip waypoints updated successfully",
