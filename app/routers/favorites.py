@@ -57,6 +57,13 @@ async def add_favorite_landmark(body: dict, current_user: Annotated[User, Depend
 
     try:
         favorite_landmark = Landmark(**body)
+        exists = current_user.get_favorite_landmark_by_id(
+            favorite_landmark.get_id())
+
+        if exists is not None:
+            raise HTTPException(
+                status_code=400, detail="Favorite landmark already exists")
+
         current_user.add_favorite_landmark(favorite_landmark)
     except Exception as e:
         raise HTTPException(status_code=400, detail="Invalid landmark")
@@ -74,10 +81,12 @@ async def remove_favorite_landmark(landmark_id: str, current_user: Annotated[Use
     @param landmark_id: `str` id of the landmark
     '''
 
-    favorite_landmark_exists = current_user.get_favorite_landmark_by_id(landmark_id)
+    favorite_landmark_exists = current_user.get_favorite_landmark_by_id(
+        landmark_id)
 
     if favorite_landmark_exists is None:
-        raise HTTPException(status_code=404, detail="Favorite landmark not found")
+        raise HTTPException(
+            status_code=404, detail="Favorite landmark not found")
 
     current_user.remove_favorite_landmark(favorite_landmark_exists)
 
