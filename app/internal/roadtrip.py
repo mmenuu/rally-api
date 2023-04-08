@@ -69,6 +69,13 @@ class Roadtrip:
                 return magazine
 
         return None
+    
+    # loop in magazine list to find magazine
+    def get_roadtrip_by_magazine(self, magazine_id: str):
+        for magazine in self.get_magazines_id():
+            if magazine == magazine_id:
+                return self
+        return None
 
     def add_magazine_id(self, magazine_id: str):
         self.__magazines_id.append(magazine_id)
