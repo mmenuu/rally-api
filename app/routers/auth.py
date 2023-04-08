@@ -23,6 +23,7 @@ router = APIRouter(
 
 settings = get_settings()
 
+
 class Token(BaseModel):
     access_token: str
     token_type: str
@@ -33,7 +34,7 @@ async def register(body: dict):
     '''
     # Register a new user
 
-    ### request body (json)
+    ### request body (form-encoded)
     - email: `str`
     - username: `str`
     - password: `str`
@@ -46,13 +47,13 @@ async def register(body: dict):
 
     # Validate body
     if not body:
-        return HTTPException(status_code=400, detail="Body is required")
+        raise HTTPException(status_code=400, detail="Body is required")
     if not body["email"]:
-        return HTTPException(status_code=400, detail="Email is required")
+        raise HTTPException(status_code=400, detail="Email is required")
     if not body["username"]:
-        return HTTPException(status_code=400, detail="Username is required")
+        raise HTTPException(status_code=400, detail="Username is required")
     if not body["password"]:
-        return HTTPException(status_code=400, detail="Password is required")
+        raise HTTPException(status_code=400, detail="Password is required")
 
     # create new user
     new_user = User(
