@@ -30,9 +30,7 @@ class RoadtripCatalog:
                             any(regex.search(waypoint.title) for waypoint in item.get_waypoints()))
 
         return search_result
-    
-    # loop each roadtrip to check magazine
-    # return list of roadtrip that have magazine_id
+
     def get_roadtrips_by_magazine(self, magazine_id: str):
         result = []
         for roadtrip in self.get_roadtrips():
