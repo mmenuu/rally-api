@@ -44,6 +44,19 @@ async def get_magazine_by_id(magazine_id: str):
     return magazine_exists
 
 
+@router.get("/roadtrip_with_magazine_tag/{magazine_id}", status_code=status.HTTP_200_OK)
+async def find_roadtrips_by_magazine(magazine_id: str):
+    '''
+    #get roadtrips that has magazine_id
+    '''
+    roadtrip_list = roadtrips_collection.get_roadtrips_by_magazine(magazine_id)
+
+    if roadtrip_list == []:
+        raise HTTPException(status_code=404, detail="No magazines found")
+    
+    return roadtrip_list
+
+
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_magazine(body: dict):
     '''

@@ -30,6 +30,18 @@ class RoadtripCatalog:
                             any(regex.search(waypoint.title) for waypoint in item.get_waypoints()))
 
         return search_result
+    
+    # loop each roadtrip to check magazine
+    # return list of roadtrip that have magazine_id
+    def get_roadtrips_by_magazine(self, magazine_id: str):
+        result = []
+        for roadtrip in self.get_roadtrips():
+            each_roadtrip = roadtrip.get_roadtrip_by_magazine(magazine_id)
+            if each_roadtrip is None:
+                continue
+            else:
+                result.append(each_roadtrip)
+        return result
 
     def add_roadtrip(self, roadtrip: Roadtrip):
         self.__roadtrips.append(roadtrip)
