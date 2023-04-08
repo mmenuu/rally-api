@@ -48,6 +48,18 @@ async def create_magazine(body: dict):
         "detail": "magazine created successfully",
     }
 
+@router.get("/")
+async def get_all_magazine():
+    '''
+    # get all magazine objects in magazine catalog
+    '''
+    all_magazines = magazines_collection.get_magazines()
+
+    if not all_magazines:
+        raise HTTPException(status_code=404, detail="No magazines found")    
+    
+    return all_magazines
+
 
 @router.get("/{magazine_id}", status_code=status.HTTP_200_OK)
 async def get_magazine_by_id(magazine_id: str):
