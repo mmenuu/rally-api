@@ -5,8 +5,6 @@ from fastapi import APIRouter, HTTPException, status, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.responses import JSONResponse
 
-from pydantic import BaseModel
-
 from ..databases import users_collection
 from ..internal.user import User
 from ..config import get_settings
@@ -69,7 +67,7 @@ async def register(body: dict):
     return JSONResponse(
         status_code=201,
         content={
-            "message": "User created successfully"
+            "detail": "User created successfully"
         },
         headers={
             "Authorization": access_token,
@@ -103,7 +101,7 @@ async def login(
     return JSONResponse(
         status_code=200,
         content={
-            "message": "User logged in successfully"
+            "detail": "User logged in successfully"
         },
         headers={
             "Authorization": access_token,

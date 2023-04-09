@@ -27,24 +27,6 @@ async def read_favorites(current_user: Annotated[User, Depends(get_current_user)
     favorite_landmarks = current_user.get_favorite_landmarks()
     return favorite_landmarks
 
-
-@router.get("/{user_id}", status_code=status.HTTP_200_OK)
-async def read_favorite_landmarks(user_id: str):
-    '''
-    # get all favorite landmarks by user id
-    '''
-
-    # get user by id
-    user_exists = users_collection.get_user_by_id(user_id)
-
-    if user_exists is None:
-        raise HTTPException(status_code=404, detail="User not found")
-
-    # get favorite landmarks
-    favorite_landmarks = user_exists.get_favorite_landmarks()
-    return favorite_landmarks
-
-
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def add_favorite_landmark(body: dict, current_user: Annotated[User, Depends(get_current_user)]):
     '''
