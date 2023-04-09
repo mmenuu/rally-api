@@ -1,6 +1,7 @@
 from .waypoint import Waypoint
 import uuid
 
+
 class Roadtrip:
     '''A roadtrip is a collection of waypoints'''
 
@@ -15,6 +16,7 @@ class Roadtrip:
         self.__category = ''
         self.__summary = ''
 
+    # Getters
     def get_id(self):
         return self.__id
 
@@ -39,9 +41,10 @@ class Roadtrip:
     def get_summary(self):
         return self.__summary
 
-    def set_author(self, user_id: str):
-        self.__author = user_id
+    def get_magazines_id(self):
+        return self.__magazines_id
 
+    # Setters
     def set_title(self, title: str):
         self.__title = title
 
@@ -60,25 +63,19 @@ class Roadtrip:
     def set_summary(self, summary: str):
         self.__summary = summary
 
-    def get_magazines_id(self):
-        return self.__magazines_id
-
-    def get_magazine_by_id(self, magazine_id: str):
-        for magazine in self.get_magazines_id():
-            if magazine == magazine_id:
-                return magazine
-
-        return None
-    
-    # loop in magazine list to find magazine
-    def get_roadtrip_by_magazine(self, magazine_id: str):
-        for magazine in self.get_magazines_id():
-            if magazine == magazine_id:
-                return self
-        return None
-
     def add_magazine_id(self, magazine_id: str):
         self.__magazines_id.append(magazine_id)
 
     def remove_magazine_id(self, magazine_id: str):
         self.__magazines_id.remove(magazine_id)
+
+    # Utility methods
+    def get_magazine_by_id(self, magazine_id: str):
+        if magazine_id in self.__magazines_id:
+            return magazine_id
+        return None
+
+    def get_roadtrip_by_magazine(self, magazine_id: str):
+        if magazine_id in self.__magazines_id:
+            return self
+        return None

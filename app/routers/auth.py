@@ -35,9 +35,8 @@ async def register(body: dict):
     - username: `str`
     - password: `str`
 
-    ### response body
-    - access_token: `str`
-    - token_type: `str`
+    ### response headers
+    authorization: `str` (JWT)
 
     '''
 
@@ -73,7 +72,7 @@ async def register(body: dict):
             "message": "User created successfully"
         },
         headers={
-            'Authorization': access_token
+            "Authorization": access_token,
         })
 
 
@@ -87,10 +86,6 @@ async def login(
     ### request body (form-encoded)
     - username: `str`
     - password: `str`
-
-    ### response body
-    - access_token: `str`
-    - token_type: `str`
     '''
 
     user = authenticate_user(form_data.username, form_data.password)
@@ -111,5 +106,5 @@ async def login(
             "message": "User logged in successfully"
         },
         headers={
-            "Authorization": access_token
+            "Authorization": access_token,
         })

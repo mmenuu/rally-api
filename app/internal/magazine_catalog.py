@@ -1,6 +1,5 @@
 from app.internal.magazine import Magazine
 
-
 class MagazineCatalog:
     def __init__(self):
         self.__magazines = []
@@ -9,14 +8,10 @@ class MagazineCatalog:
         return self.__magazines
 
     def get_magazine_by_id(self, magazine_id: str):
-        for magazine in self.get_magazines():
-            if magazine.get_id() == magazine_id:
-                return magazine
-
-        return None
+        return next((magazine for magazine in self.__magazines if magazine.get_id() == magazine_id), None)
 
     def add_magazine(self, new_magazine: Magazine):
         self.__magazines.append(new_magazine)
 
     def remove_magazine(self, magazine: Magazine):
-        return self.__magazines.remove(magazine)
+        self.__magazines.remove(magazine)

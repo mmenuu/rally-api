@@ -1,7 +1,4 @@
-from app.internal.roadtrip import Roadtrip
-from app.internal.roadtrip_catalog import RoadtripCatalog
 import uuid
-
 
 class Magazine:
     def __init__(self, title, description):
@@ -9,12 +6,7 @@ class Magazine:
         self.__title = title
         self.__description = description
 
-    def set_title(self, title: str):
-        self.__title = title
-
-    def set_description(self, text: str):
-        self.__description = text
-
+    # Getters
     def get_title(self):
         return self.__title
 
@@ -23,3 +15,10 @@ class Magazine:
 
     def get_id(self):
         return self.__id
+
+    # Setters
+    def set_title(self, title: str):
+        self.__title = title
+
+    def set_description(self, text: str):
+        self.__description = text

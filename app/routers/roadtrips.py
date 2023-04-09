@@ -104,14 +104,16 @@ async def update_roadtrip(roadtrip_id: str, body: dict, current_user: Annotated[
             status_code=status.HTTP_400_BAD_REQUEST, detail="Body is required")
 
     roadtrip_exists = roadtrips_collection.get_roadtrip_by_id(roadtrip_id)
-    if roadtrip_exists is None:
+
+    if not roadtrip_exists:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Roadtrip not found")\
+            status_code=status.HTTP_404_NOT_FOUND, detail="Roadtrip not found")
 
     if roadtrip_exists.get_author() != current_user.get_id():
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN, detail="You don't have permission to update this roadtrip")
 
+    # Update Roadtrip attributes with values from the request body
     roadtrip_exists.set_title(body.get('title', roadtrip_exists.get_title()))
     roadtrip_exists.set_sub_title(
         body.get('sub_title', roadtrip_exists.get_sub_title()))
@@ -129,17 +131,18 @@ async def update_roadtrip(roadtrip_id: str, body: dict, current_user: Annotated[
         except Exception as e:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST, detail=f"Invalid waypoints: {e}")
+
     if body.get('magazine_id'):
-        magazine_exists = magazines_collection.get_magazine_by_id(
-            body.get('magazine_id'))
-        if magazine_exists is None:
+        magazine_id = body.get('magazine_id')
+        magazine_exists = magazines_collection.get_magazine_by_id(magazine_id)
+        if not magazine_exists:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail="Magazine not found")
 
-        if body.get('magazine_id') not in roadtrip_exists.get_magazines_id():
-            roadtrip_exists.add_magazine_id(magazine_exists.get_id())
+        if magazine_id not in roadtrip_exists.get_magazines_id():
+            roadtrip_exists.add_magazine_id(magazine_id)
         else:
-            roadtrip_exists.remove_magazine_id(magazine_exists.get_id())
+            roadtrip_exists.remove_magazine_id(magazine_id)
 
     return {
         "detail": "Roadtrip updated successfully",
@@ -155,7 +158,8 @@ async def remove_roadtrip(roadtrip_id: str, current_user: Annotated[User, Depend
     '''
 
     roadtrip_exists = roadtrips_collection.get_roadtrip_by_id(roadtrip_id)
-    if roadtrip_exists is None:
+
+    if not roadtrip_exists:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Roadtrip not found")
 
