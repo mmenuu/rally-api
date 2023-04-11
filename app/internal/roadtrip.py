@@ -12,6 +12,9 @@ class Roadtrip:
         self.__sub_title = ''
         self.__description = ''
         self.__waypoints = list()
+        self.__distance_between_waypoints = list()
+        self.__total_distance = 0
+        self.__total_time = 0
         self.__magazines_id = list()
         self.__category = ''
         self.__summary = ''
@@ -22,6 +25,12 @@ class Roadtrip:
 
     def get_waypoints(self):
         return self.__waypoints
+
+    def get_total_distance(self):
+        return self.__total_distance
+
+    def get_total_time(self):
+        return self.__total_time
 
     def get_author(self):
         return self.__author
@@ -34,6 +43,9 @@ class Roadtrip:
 
     def get_description(self):
         return self.__description
+
+    def get_distance_between_waypoints(self):
+        return self.__distance_between_waypoints
 
     def get_category(self):
         return self.__category
@@ -56,6 +68,15 @@ class Roadtrip:
 
     def set_waypoints(self, waypoints: list):
         self.__waypoints = waypoints
+
+    def set_distance_between_waypoints(self, distance_between_waypoints: list):
+        self.__distance_between_waypoints = distance_between_waypoints
+
+    def set_total_distance(self, total_distance: int):
+        self.__total_distance = total_distance
+
+    def set_total_time(self, total_time: int):
+        self.__total_time = total_time
 
     def set_category(self, category: str):
         self.__category = category

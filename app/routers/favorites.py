@@ -46,14 +46,13 @@ async def add_favorite_landmark(body: dict, current_user: Annotated[User, Depend
         raise HTTPException(status_code=400, detail="Body is required")
 
     try:
-        favorite_landmark = Landmark(**body)
-        exists = current_user.get_favorite_landmark_by_id(
-            favorite_landmark.get_id())
+        exists = current_user.get_favorite_landmark_by_id(body.get("id"))
 
         if exists is not None:
             raise HTTPException(
                 status_code=400, detail="Favorite landmark already exists")
 
+        favorite_landmark = Landmark(**body)
         current_user.add_favorite_landmark(favorite_landmark)
     except Exception as e:
         raise HTTPException(status_code=400, detail="Invalid landmark")

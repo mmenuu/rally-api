@@ -45,6 +45,9 @@ async def read_roadtrips(user: str | None = None):
                         'note': waypoint.get_note(),
                     } for waypoint in roadtrip.get_waypoints()
                 ],
+                'distance_between_waypoints': roadtrip.get_distance_between_waypoints(),
+                'total_distance': roadtrip.get_total_distance(),
+                'total_time': roadtrip.get_total_time(),
                 'magazines': roadtrip.get_magazines_id(),
                 'category': roadtrip.get_category(),
                 'summary': roadtrip.get_summary()
@@ -67,6 +70,9 @@ async def read_roadtrips(user: str | None = None):
                     'note': waypoint.get_note(),
                 } for waypoint in roadtrip.get_waypoints()
             ],
+            'distance_between_waypoints': roadtrip.get_distance_between_waypoints(),
+            'total_distance': roadtrip.get_total_distance(),
+            'total_time': roadtrip.get_total_time(),
             'magazines': roadtrip.get_magazines_id(),
             'category': roadtrip.get_category(),
             'summary': roadtrip.get_summary()
@@ -101,6 +107,9 @@ async def read_roadtrip(roadtrip_id: str):
                 'note': waypoint.get_note(),
             } for waypoint in roadtrip_exists.get_waypoints()
         ],
+        'distance_between_waypoints': roadtrip_exists.get_distance_between_waypoints(),
+        'total_distance': roadtrip_exists.get_total_distance(),
+        'total_time': roadtrip_exists.get_total_time(),
         'magazines': roadtrip_exists.get_magazines_id(),
         'category': roadtrip_exists.get_category(),
         'summary': roadtrip_exists.get_summary(),
@@ -132,7 +141,11 @@ async def create_roadtrip(body: dict, current_user: Annotated[User, Depends(get_
     new_roadtrip.set_sub_title(body.get('sub_title', ''))
     new_roadtrip.set_description(body.get('description', ''))
     new_roadtrip.set_category(body.get('category', ''))
+    new_roadtrip.set_total_distance(body.get('total_distance', 0))
+    new_roadtrip.set_total_time(body.get('total_time', 0))
     new_roadtrip.set_summary(body.get('summary', ''))
+    new_roadtrip.set_distance_between_waypoints(
+        body.get('distance_between_waypoints', []))
     if body.get('waypoints'):
         try:
             waypoints = [Waypoint(**waypoint)
@@ -190,6 +203,12 @@ async def update_roadtrip(roadtrip_id: str, body: dict, current_user: Annotated[
         body.get('category', roadtrip_exists.get_category()))
     roadtrip_exists.set_summary(
         body.get('summary', roadtrip_exists.get_summary()))
+    roadtrip_exists.set_total_distance(
+        body.get('total_distance', roadtrip_exists.get_total_distance()))
+    roadtrip_exists.set_total_time(
+        body.get('total_time', roadtrip_exists.get_total_time()))
+    roadtrip_exists.set_distance_between_waypoints(
+        body.get('distance_between_waypoints', roadtrip_exists.get_distance_between_waypoints()))
     if body.get('waypoints'):
         try:
             waypoints = [Waypoint(**waypoint)
