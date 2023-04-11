@@ -8,7 +8,7 @@ from fastapi.responses import JSONResponse
 from ..databases import users_collection
 from ..internal.user import User
 from ..config import get_settings
-from ..utils import get_password_hash, create_access_token, authenticate_user
+from ..utils import get_password_hash, create_access_token, verify_password
 
 router = APIRouter(
     prefix="/auth",
@@ -22,6 +22,14 @@ router = APIRouter(
 
 settings = get_settings()
 
+
+def authenticate_user(username: str, password: str):
+    user = users_collection.get_user_by_username(username)
+    if not user:
+        return False
+    if not verify_password(password, user.get_password()):
+        return False
+    return user
 
 @router.post("/register", status_code=status.HTTP_201_CREATED)
 async def register(body: dict):
