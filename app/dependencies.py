@@ -36,7 +36,6 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
         raise credentials_exception
 
     user = users_collection.get_user_by_username(username=token_data.username)
-    print(user)
     if user is None:
         raise credentials_exception
     return user

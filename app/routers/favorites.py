@@ -24,8 +24,16 @@ async def read_favorites(current_user: Annotated[User, Depends(get_current_user)
     '''
 
     # get favorite landmarks
-    favorite_landmarks = current_user.get_favorite_landmarks()
-    return favorite_landmarks
+    return [
+        {
+            "id": landmark.get_id(),
+            "name": landmark.get_name(),
+            "amenity": landmark.get_amenity(),
+            "position": landmark.get_position(),
+            "opening_hours": landmark.get_opening_hours(),
+        } for landmark in current_user.get_favorite_landmarks()
+    ]
+
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def add_favorite_landmark(body: dict, current_user: Annotated[User, Depends(get_current_user)]):
@@ -66,7 +74,7 @@ async def remove_favorite_landmark(landmark_id: str, current_user: Annotated[Use
     favorite_landmark_exists = current_user.get_favorite_landmark_by_id(
         landmark_id)
 
-    if favorite_landmark_exists is None:
+    if not favorite_landmark_exists:
         raise HTTPException(
             status_code=404, detail="Favorite landmark not found")
 

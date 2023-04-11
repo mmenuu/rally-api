@@ -141,7 +141,6 @@ async def create_roadtrip(body: dict, current_user: Annotated[User, Depends(get_
         except Exception as e:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST, detail=f"Invalid waypoints: {e}")
-            print(e)
 
     roadtrips_collection.add_roadtrip(new_roadtrip)
 
