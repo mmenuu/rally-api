@@ -62,6 +62,10 @@ async def register(body: dict):
         username=body["username"],
         password=get_password_hash(body["password"])
     )
+    # check if user already exists
+    if users_collection.get_user_by_username(new_user.get_username()):
+        raise HTTPException(
+            status_code=400, detail="User already exists")
 
     # add user to collection
     users_collection.add_user(new_user)
