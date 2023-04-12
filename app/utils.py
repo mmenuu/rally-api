@@ -2,7 +2,6 @@ from passlib.context import CryptContext
 from datetime import datetime, timedelta
 from jose import jwt
 
-from .databases import users_collection
 from .config import get_settings
 
 settings = get_settings()
@@ -28,11 +27,3 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     encoded_jwt = jwt.encode(
         to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
     return encoded_jwt
-
-def authenticate_user(username: str, password: str):
-    user = users_collection.get_user_by_username(username)
-    if not user:
-        return False
-    if not verify_password(password, user.get_password()):
-        return False
-    return user

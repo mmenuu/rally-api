@@ -24,25 +24,15 @@ async def read_favorites(current_user: Annotated[User, Depends(get_current_user)
     '''
 
     # get favorite landmarks
-    favorite_landmarks = current_user.get_favorite_landmarks()
-    return favorite_landmarks
-
-
-@router.get("/{user_id}", status_code=status.HTTP_200_OK)
-async def read_favorite_landmarks(user_id: str):
-    '''
-    # get all favorite landmarks by user id
-    '''
-
-    # get user by id
-    user_exists = users_collection.get_user_by_id(user_id)
-
-    if user_exists is None:
-        raise HTTPException(status_code=404, detail="User not found")
-
-    # get favorite landmarks
-    favorite_landmarks = user_exists.get_favorite_landmarks()
-    return favorite_landmarks
+    return [
+        {
+            "id": landmark.get_id(),
+            "name": landmark.get_name(),
+            "amenity": landmark.get_amenity(),
+            "position": landmark.get_position(),
+            "opening_hours": landmark.get_opening_hours(),
+        } for landmark in current_user.get_favorite_landmarks()
+    ]
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
@@ -56,14 +46,13 @@ async def add_favorite_landmark(body: dict, current_user: Annotated[User, Depend
         raise HTTPException(status_code=400, detail="Body is required")
 
     try:
-        favorite_landmark = Landmark(**body)
-        exists = current_user.get_favorite_landmark_by_id(
-            favorite_landmark.get_id())
+        exists = current_user.get_favorite_landmark_by_id(body.get("id"))
 
         if exists is not None:
             raise HTTPException(
                 status_code=400, detail="Favorite landmark already exists")
 
+        favorite_landmark = Landmark(**body)
         current_user.add_favorite_landmark(favorite_landmark)
     except Exception as e:
         raise HTTPException(status_code=400, detail="Invalid landmark")
@@ -84,7 +73,7 @@ async def remove_favorite_landmark(landmark_id: str, current_user: Annotated[Use
     favorite_landmark_exists = current_user.get_favorite_landmark_by_id(
         landmark_id)
 
-    if favorite_landmark_exists is None:
+    if not favorite_landmark_exists:
         raise HTTPException(
             status_code=404, detail="Favorite landmark not found")
 

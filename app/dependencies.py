@@ -36,7 +36,13 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
         raise credentials_exception
 
     user = users_collection.get_user_by_username(username=token_data.username)
-
     if user is None:
         raise credentials_exception
     return user
+
+
+async def check_admin_role(current_user: Annotated[User, Depends(get_current_user)]):
+    if current_user.get_role() != "admin":
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+    return current_user
