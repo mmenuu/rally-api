@@ -12,11 +12,11 @@ class User(Account):
         return self.__favorite_landmarks
 
     def get_favorite_landmark_by_id(self, landmark_id: str):
-        return next((landmark for landmark in self.__favorite_landmarks if landmark.get_id() == landmark_id), None)
+        return next((landmark for landmark in self.__favorite_landmarks if landmark == landmark_id), None)
 
     # Setters
-    def add_favorite_landmark(self, landmark: Landmark):
-        self.__favorite_landmarks.append(landmark)
+    def add_favorite_landmark(self, landmark_id: str):
+        self.__favorite_landmarks.append(landmark_id)
 
-    def remove_favorite_landmark(self, landmark: Landmark):
-        self.__favorite_landmarks.remove(landmark)
+    def remove_favorite_landmark(self, landmark_id: str):
+        self.__favorite_landmarks.remove(landmark_id)

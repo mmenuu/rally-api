@@ -4,18 +4,16 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .routers import users, auth, roadtrips, magazines, reviews, favorites
 
-app = FastAPI()
+from .config import get_settings
 
-origins = [
-    "http://localhost",
-    "http://localhost:3000",
-    "http://localhost:3000/*",
-    "*"
-]
+
+settings = get_settings()
+
+app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=settings.ORIGINS.split(","),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

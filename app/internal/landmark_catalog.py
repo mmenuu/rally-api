@@ -1,4 +1,4 @@
-from landmark import Landmark
+from .landmark import Landmark
 
 
 class LandmarkCatalog:
