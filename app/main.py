@@ -2,20 +2,18 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .routers import users, auth, roadtrips, magazines, reviews, favorites
+from .routers import users, auth, roadtrips, magazines, favorites, reviews, landmarks
+
+from .config import get_settings
+
+
+settings = get_settings()
 
 app = FastAPI()
 
-origins = [
-    "http://localhost",
-    "http://localhost:3000",
-    "http://localhost:3000/*",
-    "*"
-]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=settings.ORIGINS.split(","),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -26,7 +24,9 @@ app.include_router(users.router)
 app.include_router(auth.router)
 app.include_router(magazines.router)
 app.include_router(roadtrips.router)
+app.include_router(landmarks.router)
 app.include_router(reviews.router)
+
 app.include_router(favorites.router)
 
 
