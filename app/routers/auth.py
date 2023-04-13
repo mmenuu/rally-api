@@ -5,12 +5,10 @@ from fastapi import APIRouter, HTTPException, status, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.responses import JSONResponse
 
-from pydantic import BaseModel
-
 from ..databases import users_collection
 from ..internal.user import User
 from ..config import get_settings
-from ..utils import get_password_hash, create_access_token, authenticate_user
+from ..utils import get_password_hash, create_access_token, verify_password
 
 router = APIRouter(
     prefix="/auth",
@@ -25,6 +23,14 @@ router = APIRouter(
 settings = get_settings()
 
 
+def authenticate_user(username: str, password: str):
+    user = users_collection.get_user_by_username(username)
+    if not user:
+        return False
+    if not verify_password(password, user.get_password()):
+        return False
+    return user
+
 @router.post("/register", status_code=status.HTTP_201_CREATED)
 async def register(body: dict):
     '''
@@ -35,9 +41,8 @@ async def register(body: dict):
     - username: `str`
     - password: `str`
 
-    ### response body
-    - access_token: `str`
-    - token_type: `str`
+    ### response headers
+    authorization: `str` (JWT)
 
     '''
 
@@ -57,6 +62,10 @@ async def register(body: dict):
         username=body["username"],
         password=get_password_hash(body["password"])
     )
+    # check if user already exists
+    if users_collection.get_user_by_username(new_user.get_username()):
+        raise HTTPException(
+            status_code=400, detail="User already exists")
 
     # add user to collection
     users_collection.add_user(new_user)
@@ -70,10 +79,10 @@ async def register(body: dict):
     return JSONResponse(
         status_code=201,
         content={
-            "message": "User created successfully"
+            "detail": "User created successfully"
         },
         headers={
-            'Authorization': access_token
+            "Authorization": access_token,
         })
 
 
@@ -87,10 +96,6 @@ async def login(
     ### request body (form-encoded)
     - username: `str`
     - password: `str`
-
-    ### response body
-    - access_token: `str`
-    - token_type: `str`
     '''
 
     user = authenticate_user(form_data.username, form_data.password)
@@ -108,8 +113,8 @@ async def login(
     return JSONResponse(
         status_code=200,
         content={
-            "message": "User logged in successfully"
+            "detail": "User logged in successfully"
         },
         headers={
-            "Authorization": access_token
+            "Authorization": access_token,
         })

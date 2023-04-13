@@ -15,6 +15,7 @@ router = APIRouter(
             'message': 'Not Found'
         }
     },
+    dependencies=[Depends(get_current_user)]
 )
 
 
@@ -41,7 +42,7 @@ async def get_magazine_by_id(magazine_id: str):
     if magazine_exists is None:
         raise HTTPException(status_code=404, detail="No magazines found")
 
-    roadtrips = roadtrips_collection.get_roadtrips_by_magazine(magazine_id)
+    roadtrips = roadtrips_collection.get_roadtrips_by_magazine_id(magazine_id)
 
     return {
         "magazine": magazine_exists,

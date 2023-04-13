@@ -9,6 +9,8 @@ app = FastAPI()
 origins = [
     "http://localhost",
     "http://localhost:3000",
+    "http://localhost:3000/*",
+    "*"
 ]
 
 app.add_middleware(
@@ -17,6 +19,7 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["Authorization"]
 )
 
 app.include_router(users.router)
@@ -25,6 +28,7 @@ app.include_router(magazines.router)
 app.include_router(roadtrips.router)
 app.include_router(reviews.router)
 app.include_router(favorites.router)
+
 
 @app.get("/")
 def read_root():

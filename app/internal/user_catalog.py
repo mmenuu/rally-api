@@ -5,32 +5,22 @@ class UserCatalog:
     def __init__(self):
         self.__users = []
 
-    def add_user(self, user: User):
-        self.__users.append(user)
-
+    # Getters
     def get_users(self):
         return self.__users
 
     def get_user_by_email(self, email: str):
-        for user in self.get_users():
-            if user.get_email() == email:
-                return user
-
-        return None
+        return next((user for user in self.get_users() if user.get_email() == email), None)
 
     def get_user_by_username(self, username: str):
-        for user in self.get_users():
-            if user.get_username() == username:
-                return user
-
-        return None
+        return next((user for user in self.get_users() if user.get_username() == username), None)
 
     def get_user_by_id(self, user_id: str):
-        for user in self.get_users():
-            if user.get_id() == user_id:
-                return user
+        return next((user for user in self.get_users() if user.get_id() == user_id), None)
 
-        return None
+    # Setters
+    def add_user(self, user: User):
+        self.__users.append(user)
 
     def remove_user(self, user: User):
         self.__users.remove(user)
