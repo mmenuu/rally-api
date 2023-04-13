@@ -5,6 +5,7 @@ class Landmark:
         self.__amenity = amenity
         self.__location = location
         self.__opening_hours = opening_hours
+        self.__reviews = []
 
     def get_id(self):
         return self.__id
@@ -21,6 +22,12 @@ class Landmark:
     def get_opening_hours(self):
         return self.__opening_hours
 
+    def get_reviews_by_user_id(self, user_id: str):
+        for review in __reviews:
+            if review.get_reviewer() == user_id:
+                return review
+        return None
+
     def set_id(self, id):
         self.__id = id
 
@@ -35,3 +42,9 @@ class Landmark:
 
     def set_opening_hours(self, opening_hours):
         self.__opening_hours = opening_hours
+    
+    def add_review(self, review: Review):
+        self.__reviews.append(review)
+    
+    def remove_review(self, review: Review):
+        self.__reviews.remove(review)

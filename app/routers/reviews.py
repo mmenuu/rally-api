@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 
 from ..databases import reviews_collection
+from ..databases import landmarks_collection
 from ..internal.review import Review 
 
 
@@ -51,7 +52,13 @@ async def create_review(body: dict):
         rating = body["rating"]
     )
 
-    reviews_collection.add_review(new_review)
+    landmark_exist = landmarks_collection.get_landmark_by_id(landmark_id)
+
+    if landmark_exist != None:
+        landmark_exist.add_review(new_review)
+    
+    else:
+        raise HTTPException(status_code=400, detail = "landmark doesn't exist")
     
     return {
         "detail": "review created successfully",
@@ -105,7 +112,17 @@ async def delete_review(body: dict):
     if not body['magazine_id']:
         raise HTTPException(status_code=400, detail="magazine_id is required")
 
-    reviews_collection.remove_review(body['user_id'], body['landmark_id'])
+    landmark_exist = landmarks_collection.get_landmark_by_id(landmark_id)
+
+    # check landmark and review if it exist
+    if landmark_exist != None :
+        review_exist = landmark_exist.get_reviews_by_user_id(user_id)
+        if review_exist != None:
+            landmark_exist.remove_review(review_exist)
+        else:
+            raise HTTPException(status_code=400, detail="Review doesn't exist")
+    else:
+        raise HTTPException(status_code=400, detail="landmark doesn't exist")
     
     return {
         "detail" : "review deleted successfully"
