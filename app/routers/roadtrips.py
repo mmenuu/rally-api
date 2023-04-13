@@ -2,11 +2,10 @@ from typing import Annotated
 from fastapi import APIRouter, HTTPException, status, Depends
 
 from ..databases import roadtrips_collection, magazines_collection, users_collection
-from ..dependencies import get_current_user
+from ..dependencies import get_current_user, User
 
 from ..internal.roadtrip import Roadtrip
 from ..internal.waypoint import Waypoint
-from ..internal.user import User
 
 router = APIRouter(
     prefix="/roadtrips",

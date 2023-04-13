@@ -1,10 +1,9 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from typing import Annotated
 
-from ..dependencies import get_current_user
+from ..dependencies import get_current_user, User
 from ..databases import landmarks_collection
 from ..internal.landmark import Landmark
-from ..internal.user import User
 
 router = APIRouter(
     prefix="/favorites",

@@ -2,7 +2,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .routers import users, auth, roadtrips, magazines, reviews, favorites
+from .routers import users, auth, roadtrips, magazines, favorites, reviews, landmarks
 
 from .config import get_settings
 
@@ -24,7 +24,9 @@ app.include_router(users.router)
 app.include_router(auth.router)
 app.include_router(magazines.router)
 app.include_router(roadtrips.router)
+app.include_router(landmarks.router)
 app.include_router(reviews.router)
+
 app.include_router(favorites.router)
 
 

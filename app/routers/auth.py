@@ -5,8 +5,7 @@ from fastapi import APIRouter, HTTPException, status, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.responses import JSONResponse
 
-from ..databases import users_collection
-from ..internal.user import User
+from ..databases import users_collection, User
 from ..config import get_settings
 from ..utils import get_password_hash, create_access_token, verify_password
 

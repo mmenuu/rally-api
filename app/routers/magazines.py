@@ -5,7 +5,6 @@ from ..dependencies import get_current_user
 from ..databases import magazines_collection, roadtrips_collection
 
 from ..internal.magazine import Magazine
-from ..internal.user import User
 
 router = APIRouter(
     prefix="/magazines",
