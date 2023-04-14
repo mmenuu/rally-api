@@ -4,16 +4,17 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .routers import users, auth, roadtrips, magazines, favorites, reviews, landmarks
 
-from .config import get_settings
-
-
-settings = get_settings()
-
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.ORIGINS.split(","),
+    allow_origins=[
+        "http://localhost",
+        "http://localhost:3000",
+        "https://rally-map.vercel.app",
+        "https://rally-map.vercel.app/*"
+        "*"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
