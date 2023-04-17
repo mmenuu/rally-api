@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from typing import Annotated
-from ..internal.user import User
+
 from ..databases import users_collection
-from ..dependencies import get_current_user
+from ..dependencies import get_current_user, User
 
 router = APIRouter(
     prefix="/users",
@@ -33,7 +33,7 @@ async def read_users(user_id: str | None = None):
             'username': user_exists.get_username(),
             'email': user_exists.get_email()
         }
-    
+
     return [
         {
             'id': user.get_id(),
@@ -42,6 +42,7 @@ async def read_users(user_id: str | None = None):
         }
         for user in users_collection.get_users()
     ]
+
 
 @router.get('/profile', status_code=status.HTTP_200_OK)
 async def read_profile(current_user: Annotated[User, Depends(get_current_user)]):
@@ -53,6 +54,7 @@ async def read_profile(current_user: Annotated[User, Depends(get_current_user)])
         'username': current_user.get_username(),
         'email': current_user.get_email()
     }
+
 
 @router.get('/profile/{username}', status_code=status.HTTP_200_OK)
 async def read_profile_by_username(username: str):

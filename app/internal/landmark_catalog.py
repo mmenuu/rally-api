@@ -1,4 +1,4 @@
-from landmark import Landmark
+from .landmark import Landmark
 
 
 class LandmarkCatalog:
@@ -16,3 +16,6 @@ class LandmarkCatalog:
 
     def remove_landmark(self, landmark: Landmark):
         self.__landmarks.remove(landmark)
+
+    def get_landmark_by_review_id(self, review_id: str):
+        return next((landmark for landmark in self.__landmarks if landmark.get_review_by_id(review_id) is not None), None)

@@ -1,10 +1,9 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from typing import Annotated
 
-from ..dependencies import get_current_user
-from ..databases import users_collection
+from ..dependencies import get_current_user, User
+from ..databases import landmarks_collection
 from ..internal.landmark import Landmark
-from ..internal.user import User
 
 router = APIRouter(
     prefix="/favorites",
@@ -23,16 +22,16 @@ async def read_favorites(current_user: Annotated[User, Depends(get_current_user)
     # get all favorite landmarks by current user
     '''
 
-    # get favorite landmarks
-    return [
-        {
-            "id": landmark.get_id(),
-            "name": landmark.get_name(),
-            "amenity": landmark.get_amenity(),
-            "position": landmark.get_position(),
-            "opening_hours": landmark.get_opening_hours(),
-        } for landmark in current_user.get_favorite_landmarks()
-    ]
+    favorite_landmarks = [landmarks_collection.get_landmark_by_id(
+        landmark_id) for landmark_id in current_user.get_favorite_landmarks()]
+
+    return [{
+        "id": landmark.get_id(),
+        "name": landmark.get_name(),
+        "amenity": landmark.get_amenity(),
+        "position": landmark.get_position(),
+        "opening_hours": landmark.get_opening_hours(),
+    } for landmark in favorite_landmarks]
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
@@ -46,14 +45,20 @@ async def add_favorite_landmark(body: dict, current_user: Annotated[User, Depend
         raise HTTPException(status_code=400, detail="Body is required")
 
     try:
-        exists = current_user.get_favorite_landmark_by_id(body.get("id"))
+        landmark_exists = landmarks_collection.get_landmark_by_id(
+            body.get("id"))
 
-        if exists is not None:
+        if not landmark_exists:
+            new_landmark = Landmark(**body)
+            landmarks_collection.add_landmark(new_landmark)
+
+        favorite_exists = current_user.get_favorite_landmark_by_id(
+            body.get("id"))
+        if favorite_exists:
             raise HTTPException(
                 status_code=400, detail="Favorite landmark already exists")
 
-        favorite_landmark = Landmark(**body)
-        current_user.add_favorite_landmark(favorite_landmark)
+        current_user.add_favorite_landmark(body.get("id"))
     except Exception as e:
         raise HTTPException(status_code=400, detail="Invalid landmark")
 

@@ -2,10 +2,10 @@ from ..internal.landmark import Landmark
 
 
 class Waypoint(Landmark):
-    def __init__(self, id: str, name: str, amenity: str, position: list, opening_hours: str):
+    def __init__(self, id: str, name: str, amenity: str, position: list, opening_hours: str, note: str, description: str):
         super().__init__(id, name, amenity, position, opening_hours)
-        self.__note = ''
-        self.__description = ''
+        self.__note = note
+        self.__description = description
 
     def get_note(self):
         return self.__note

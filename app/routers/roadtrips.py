@@ -2,11 +2,10 @@ from typing import Annotated
 from fastapi import APIRouter, HTTPException, status, Depends
 
 from ..databases import roadtrips_collection, magazines_collection, users_collection
-from ..dependencies import get_current_user
+from ..dependencies import get_current_user, User
 
 from ..internal.roadtrip import Roadtrip
 from ..internal.waypoint import Waypoint
-from ..internal.user import User
 
 router = APIRouter(
     prefix="/roadtrips",
@@ -42,12 +41,15 @@ async def read_roadtrips(user: str | None = None):
                         'name': waypoint.get_name(),
                         'description': waypoint.get_description(),
                         'position': waypoint.get_position(),
+                        'amenity': waypoint.get_amenity(),
+                        'opening_hours': waypoint.get_opening_hours(),
                         'note': waypoint.get_note(),
                     } for waypoint in roadtrip.get_waypoints()
                 ],
                 'distance_between_waypoints': roadtrip.get_distance_between_waypoints(),
                 'total_distance': roadtrip.get_total_distance(),
                 'total_time': roadtrip.get_total_time(),
+                'description': roadtrip.get_description(),
                 'magazines': roadtrip.get_magazines_id(),
                 'category': roadtrip.get_category(),
                 'summary': roadtrip.get_summary()
@@ -67,6 +69,8 @@ async def read_roadtrips(user: str | None = None):
                     'name': waypoint.get_name(),
                     'description': waypoint.get_description(),
                     'position': waypoint.get_position(),
+                    'amenity': waypoint.get_amenity(),
+                    'opening_hours': waypoint.get_opening_hours(),
                     'note': waypoint.get_note(),
                 } for waypoint in roadtrip.get_waypoints()
             ],
@@ -74,6 +78,7 @@ async def read_roadtrips(user: str | None = None):
             'total_distance': roadtrip.get_total_distance(),
             'total_time': roadtrip.get_total_time(),
             'magazines': roadtrip.get_magazines_id(),
+            'description': roadtrip.get_description(),
             'category': roadtrip.get_category(),
             'summary': roadtrip.get_summary()
         }
@@ -102,6 +107,8 @@ async def read_roadtrip(roadtrip_id: str):
             {
                 'id': waypoint.get_id(),
                 'name': waypoint.get_name(),
+                'amenity': waypoint.get_amenity(),
+                'opening_hours': waypoint.get_opening_hours(),
                 'description': waypoint.get_description(),
                 'position': waypoint.get_position(),
                 'note': waypoint.get_note(),
@@ -112,6 +119,7 @@ async def read_roadtrip(roadtrip_id: str):
         'total_time': roadtrip_exists.get_total_time(),
         'magazines': roadtrip_exists.get_magazines_id(),
         'category': roadtrip_exists.get_category(),
+        'description': roadtrip_exists.get_description(),
         'summary': roadtrip_exists.get_summary(),
         'author': roadtrip_exists.get_author()
     }

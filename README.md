@@ -36,9 +36,10 @@ python -m uvicorn app.main:app --host 0.0.0.0 --port 3000 --reload
 
 ## Example .env file
 ```bash
-SECRET_KEY =
-ALGORITHM = 
-ACCESS_TOKEN_EXPIRE_MINUTES =
+SECRET_KEY = "YourSecretKey"
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ORIGINS = "http://localhost,http://localhost:3000,http://localhost:3000/*"
 ```
 
 ## Semantic Commit Messages

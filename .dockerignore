@@ -1,0 +1,19 @@
+# flyctl launch added from .gitignore
+**/__pycache__
+**/bin
+**/include
+**/lib
+**/pyvenv.cfg
+**/site
+**/dist
+**/env
+**/venv
+**/.pytest_cache
+**/.vscode
+
+**/.DS_Store
+
+**/.env.*
+**/.env
+**/tempCodeRunnerFile.py
+fly.toml
