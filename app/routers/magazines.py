@@ -1,9 +1,10 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from typing import Annotated
 
-from ..dependencies import check_admin_role
+from ..dependencies import check_admin_role, get_current_user
 from ..databases import magazines_collection, roadtrips_collection
 
+from ..internal.admin import Admin
 from ..internal.magazine import Magazine
 
 router = APIRouter(
@@ -14,7 +15,7 @@ router = APIRouter(
             'message': 'Not Found'
         }
     },
-    dependencies=[Depends(check_admin_role)]
+    dependencies=[Depends(get_current_user)]
 )
 
 
@@ -48,8 +49,9 @@ async def get_magazine_by_id(magazine_id: str):
         "roadtrips": roadtrips
     }
 
+
 @router.post("/", status_code=status.HTTP_201_CREATED)
-async def create_magazine(body: dict):
+async def create_magazine(body: dict, current_user: Annotated[Admin, Depends(check_admin_role)]):
     '''
     # create new magazine
     ### request body
@@ -73,7 +75,7 @@ async def create_magazine(body: dict):
 
 
 @router.patch("/{magazine_id}", status_code=status.HTTP_200_OK)
-async def update_magazine(magazine_id: str, body: dict):
+async def update_magazine(magazine_id: str, body: dict, current_user: Annotated[Admin, Depends(check_admin_role)]):
     '''
     #edit magazine by id
     @param magazine_id: `str` id of magazine
@@ -101,7 +103,7 @@ async def update_magazine(magazine_id: str, body: dict):
 
 
 @router.delete("/{magazine_id}", status_code=status.HTTP_200_OK)
-async def delete_roadtrip(magazine_id: str):
+async def delete_roadtrip(magazine_id: str, current_user: Annotated[Admin, Depends(check_admin_role)]):
     '''
     # delete magazine by id
     @param roadtrip_id: `str` id of the roadtrip
