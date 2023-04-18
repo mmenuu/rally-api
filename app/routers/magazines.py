@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from typing import Annotated
 
-from ..dependencies import get_current_user
+from ..dependencies import check_admin_role
 from ..databases import magazines_collection, roadtrips_collection
 
 from ..internal.magazine import Magazine
@@ -14,7 +14,7 @@ router = APIRouter(
             'message': 'Not Found'
         }
     },
-    dependencies=[Depends(get_current_user)]
+    dependencies=[Depends(check_admin_role)]
 )
 
 

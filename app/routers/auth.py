@@ -5,7 +5,7 @@ from fastapi import APIRouter, HTTPException, status, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.responses import JSONResponse
 
-from ..databases import users_collection, User
+from ..databases import accounts_collection, User
 from ..config import get_settings
 from ..utils import get_password_hash, create_access_token, verify_password
 
@@ -23,7 +23,7 @@ settings = get_settings()
 
 
 def authenticate_user(username: str, password: str):
-    user = users_collection.get_user_by_username(username)
+    user = accounts_collection.get_account_by_username(username)
     if not user:
         return False
     if not verify_password(password, user.get_password()):
@@ -62,12 +62,12 @@ async def register(body: dict):
         password=get_password_hash(body["password"])
     )
     # check if user already exists
-    if users_collection.get_user_by_username(new_user.get_username()):
+    if accounts_collection.get_account_by_username(new_user.get_username()):
         raise HTTPException(
             status_code=400, detail="User already exists")
 
     # add user to collection
-    users_collection.add_user(new_user)
+    accounts_collection.add_account(new_user)
 
     access_token_expires = timedelta(
         minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)

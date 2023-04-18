@@ -1,7 +1,7 @@
 from typing import Annotated
 from fastapi import APIRouter, HTTPException, status, Depends
 
-from ..databases import roadtrips_collection, magazines_collection, users_collection
+from ..databases import roadtrips_collection, magazines_collection, accounts_collection
 from ..dependencies import get_current_user, User
 
 from ..internal.roadtrip import Roadtrip
@@ -15,6 +15,7 @@ router = APIRouter(
             'message': 'Not Found'
         }
     },
+    dependencies=[Depends(get_current_user)]
 )
 
 
@@ -25,7 +26,7 @@ async def read_roadtrips(user: str | None = None):
     '''
 
     if user:
-        user_exists = users_collection.get_user_by_username(user)
+        user_exists = accounts_collection.get_account_by_username(user)
         if not user_exists:
             raise HTTPException(status_code=404, detail="User not found")
 

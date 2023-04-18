@@ -1,5 +1,4 @@
 from .account import Account
-from .landmark import Landmark
 
 
 class User(Account):

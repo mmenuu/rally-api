@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from typing import Annotated
 
-from ..databases import users_collection
-from ..dependencies import get_current_user, User
+from ..databases import accounts_collection
+from ..dependencies import get_current_user, User, check_admin_role
 
 router = APIRouter(
     prefix="/users",
@@ -16,23 +16,10 @@ router = APIRouter(
 
 
 @router.get('/', status_code=status.HTTP_200_OK)
-async def read_users(user_id: str | None = None):
+async def read_users(isAdmin: Annotated[bool, Depends(check_admin_role)]):
     '''
     # Get all users
     '''
-
-    if user_id:
-        user_exists = users_collection.get_user_by_id(user_id)
-
-        # check if user exist
-        if user_exists is None:
-            raise HTTPException(status_code=404, detail="User not found")
-
-        return {
-            'id': user_exists.get_id(),
-            'username': user_exists.get_username(),
-            'email': user_exists.get_email()
-        }
 
     return [
         {
@@ -40,7 +27,7 @@ async def read_users(user_id: str | None = None):
             'username': user.get_username(),
             'email': user.get_email()
         }
-        for user in users_collection.get_users()
+        for user in accounts_collection.get_accounts()
     ]
 
 
@@ -61,7 +48,7 @@ async def read_profile_by_username(username: str):
     '''
     # Get profile by username
     '''
-    user_exists = users_collection.get_user_by_username(username)
+    user_exists = accounts_collection.get_account_by_username(username)
 
     if user_exists is None:
         raise HTTPException(status_code=404, detail="User not found")

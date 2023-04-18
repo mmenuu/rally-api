@@ -13,6 +13,7 @@ router = APIRouter(
             'message': 'Not Found'
         }
     },
+    dependencies=[Depends(get_current_user)]
 )
 
 

@@ -6,7 +6,9 @@ from jose import JWTError, jwt
 from pydantic import BaseModel
 
 from .internal.user import User
-from .databases import users_collection
+from .internal.admin import Admin
+from .internal.account import Account
+from .databases import accounts_collection
 from .config import get_settings
 
 settings = get_settings()
@@ -35,14 +37,15 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
     except JWTError:
         raise credentials_exception
 
-    user = users_collection.get_user_by_username(username=token_data.username)
+    user = accounts_collection.get_account_by_username(username=token_data.username)
     if user is None:
         raise credentials_exception
+    
     return user
 
 
-async def check_admin_role(current_user: Annotated[User, Depends(get_current_user)]):
-    if current_user.get_role() != "admin":
+async def check_admin_role(current_user = Depends(get_current_user)):
+    if not isinstance(current_user, Admin):
         raise HTTPException(status_code=403, detail="Forbidden")
-
+    
     return current_user
