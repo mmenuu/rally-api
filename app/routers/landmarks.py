@@ -80,6 +80,7 @@ async def read_landmark(landmark_id: str, current_user: Annotated[User, Depends(
         "amenity": landmark.get_amenity(),
         "position": landmark.get_position(),
         "opening_hours": landmark.get_opening_hours(),
+        "average_rating": landmark.get_average_rating(),
         "reviews": [{
             "id": review.get_id(),
             "reviewer": review.get_reviewer(),

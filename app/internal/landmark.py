@@ -35,7 +35,7 @@ class Landmark:
         return next((review for review in self.__reviews if review.get_reviewer() == user_id), None)
     
     def get_average_rating(self):
-        return sum([review.get_rating() for review in self.__reviews]) / len(self.__reviews)
+        return sum([review.get_rating() for review in self.__reviews]) / len(self.__reviews) if len(self.__reviews) > 0 else 0
     
     # Setters
     def add_review(self, review: Review):
