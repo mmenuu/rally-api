@@ -55,7 +55,7 @@ async def read_roadtrips(user: str | None = None):
                 'category': roadtrip.get_category(),
                 'summary': roadtrip.get_summary()
             }
-            for roadtrip in roadtrips_collection.get_roadtrips_by_user_id(user_exists.get_id())
+            for roadtrip in roadtrips_collection.get_roadtrips_by_username(user_exists.get_username())
         ]
 
     return [
@@ -143,7 +143,7 @@ async def create_roadtrip(body: dict, current_user: Annotated[User, Depends(get_
             status_code=status.HTTP_400_BAD_REQUEST, detail="Body is required")
 
     new_roadtrip = Roadtrip(
-        user_id=current_user.get_id(),
+        author=current_user.get_username(),
     )
 
     new_roadtrip.set_title(body.get('title', ''))
@@ -198,7 +198,7 @@ async def update_roadtrip(roadtrip_id: str, body: dict, current_user: Annotated[
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Roadtrip not found")
 
-    if roadtrip_exists.get_author() != current_user.get_id():
+    if roadtrip_exists.get_author() != current_user.get_username():
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN, detail="You don't have permission to update this roadtrip")
 
@@ -258,7 +258,7 @@ async def remove_roadtrip(roadtrip_id: str, current_user: Annotated[User, Depend
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Roadtrip not found")
 
-    if roadtrip_exists.get_author() != current_user.get_id():
+    if roadtrip_exists.get_author() != current_user.get_username():
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN, detail="You don't have permission to delete this roadtrip")
 

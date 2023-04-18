@@ -7,6 +7,7 @@ class Review:
         self.__reviewer = reviewer
         self.__rating = rating
 
+    # Getters
     def get_id(self):
         return self.__id 
     
@@ -19,6 +20,7 @@ class Review:
     def get_rating(self):
         return self.__rating
     
+    # Setters
     def set_review_text(self, text: str):
         self.__review_text = text 
 

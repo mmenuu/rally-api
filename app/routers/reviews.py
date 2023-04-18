@@ -24,12 +24,12 @@ async def read_reviews(user: str | None = None):
     '''
 
     if user:
-        user_exists = accounts_collection.get_account_by_id(user)
+        user_exists = accounts_collection.get_account_by_username(user)
 
         if user_exists is None:
             raise HTTPException(status_code=404, detail="User not found")
 
-        user_reviews = [landmark.get_review_by_user_id(
+        user_reviews = [landmark.get_review_by_username(
             user) for landmark in landmarks_collection.get_landmarks()]
 
         return [{
@@ -62,14 +62,14 @@ async def create_review(body: dict, current_user: Annotated[User, Depends(get_cu
     if not landmark_exists:
         raise HTTPException(status_code=404, detail="Landmark not found")
 
-    review_exists = landmark_exists.get_review_by_user_id(
-        current_user.get_id())
+    review_exists = landmark_exists.get_review_by_username(
+        current_user.get_username())
 
     if review_exists:
         raise HTTPException(status_code=400, detail="Review already exists")
 
     review = Review(
-        reviewer=current_user.get_id(),
+        reviewer=current_user.get_username(),
         review_text=body.get('review_text'),
         rating=body.get('rating')
     )
@@ -96,7 +96,7 @@ async def edit_review(review_id, body: dict, current_user: Annotated[User, Depen
 
     review = landmark.get_review_by_id(review_id)
 
-    if review.get_reviewer() != current_user.get_id():
+    if review.get_reviewer() != current_user.get_username():
         raise HTTPException(403, "Forbidden")
 
     review.set_review_text(body.get('review_text', review.get_review_text()))
@@ -119,7 +119,7 @@ async def delete_review(review_id: str, current_user: Annotated[User, Depends(ge
 
     review = landmark.get_review_by_id(review_id)
 
-    if review.get_reviewer() != current_user.get_id():
+    if review.get_reviewer() != current_user.get_username():
         raise HTTPException(403, "Forbidden")
 
     landmark.remove_review(review)

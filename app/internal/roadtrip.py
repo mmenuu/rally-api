@@ -5,9 +5,9 @@ import uuid
 class Roadtrip:
     '''A roadtrip is a collection of waypoints'''
 
-    def __init__(self, user_id: str):
+    def __init__(self, author: str):
         self.__id = str(uuid.uuid4())
-        self.__author = user_id
+        self.__author = author
         self.__title = ''
         self.__sub_title = ''
         self.__description = ''

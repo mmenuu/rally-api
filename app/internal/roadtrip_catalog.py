@@ -20,8 +20,9 @@ class RoadtripCatalog:
     def get_roadtrip_by_id(self, roadtrip_id: str):
         return next((roadtrip for roadtrip in self.__roadtrips if roadtrip.get_id() == roadtrip_id), None)
 
-    def get_roadtrips_by_user_id(self, user_id: str):
-        return [roadtrip for roadtrip in self.__roadtrips if roadtrip.get_author() == user_id]
+    def get_roadtrips_by_username(self, username: str):
+        return [roadtrip for roadtrip in self.__roadtrips if roadtrip.get_author() == username]
+    
 
     def get_roadtrips_by_category(self, category: str):
         return [roadtrip for roadtrip in self.__roadtrips if roadtrip.get_category() == category]

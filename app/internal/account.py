@@ -7,6 +7,7 @@ class Account:
         self.__username = username
         self.__password = password
 
+    # Getters
     def get_id(self):
         return self.__id
 
@@ -19,6 +20,7 @@ class Account:
     def get_password(self):
         return self.__password
 
+    # Setters
     def set_email(self, email):
         self.__email = email
 

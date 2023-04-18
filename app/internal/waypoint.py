@@ -7,12 +7,14 @@ class Waypoint(Landmark):
         self.__note = note
         self.__description = description
 
+    # Getters
     def get_note(self):
         return self.__note
 
     def get_description(self):
         return self.__description
 
+    # Setters
     def set_note(self, note: str):
         self.__note = note
 
