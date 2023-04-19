@@ -29,7 +29,14 @@ async def get_all_magazine():
     if all_magazines is None:
         raise HTTPException(status_code=404, detail="No magazines found")
 
-    return all_magazines
+    return [
+        {
+            'id': magazine.get_id(),
+            'title': magazine.get_title(),
+            'description': magazine.get_description(),
+            'roadtrips': roadtrips_collection.get_roadtrips_by_magazine_id(magazine.get_id())
+        } for magazine in all_magazines
+    ]
 
 
 @router.get("/{magazine_id}", status_code=status.HTTP_200_OK)
@@ -45,7 +52,9 @@ async def get_magazine_by_id(magazine_id: str):
     roadtrips = roadtrips_collection.get_roadtrips_by_magazine_id(magazine_id)
 
     return {
-        "magazine": magazine_exists,
+        "id": magazine_exists.get_id(),
+        "title": magazine_exists.get_title(),
+        "description": magazine_exists.get_description(),
         "roadtrips": roadtrips
     }
 
@@ -71,6 +80,7 @@ async def create_magazine(body: dict, current_user: Annotated[Admin, Depends(che
 
     return {
         "detail": "magazine created successfully",
+        "magazine_id": new_magazine.get_id()
     }
 
 
