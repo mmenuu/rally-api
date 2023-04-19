@@ -23,16 +23,13 @@ async def read_favorites(current_user: Annotated[User, Depends(get_current_user)
     # get all favorite landmarks by current user
     '''
 
-    favorite_landmarks = [landmarks_collection.get_landmark_by_id(
-        landmark_id) for landmark_id in current_user.get_favorite_landmarks()]
-
     return [{
         "id": landmark.get_id(),
         "name": landmark.get_name(),
         "amenity": landmark.get_amenity(),
         "position": landmark.get_position(),
         "opening_hours": landmark.get_opening_hours(),
-    } for landmark in favorite_landmarks]
+    } for landmark in current_user.get_favorite_landmarks()]
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
@@ -48,9 +45,9 @@ async def add_favorite_landmark(body: dict, current_user: Annotated[User, Depend
     try:
         landmark_exists = landmarks_collection.get_landmark_by_id(
             body.get("id"))
-
+        
+        new_landmark = Landmark(**body)
         if not landmark_exists:
-            new_landmark = Landmark(**body)
             landmarks_collection.add_landmark(new_landmark)
 
         favorite_exists = current_user.get_favorite_landmark_by_id(
@@ -59,7 +56,7 @@ async def add_favorite_landmark(body: dict, current_user: Annotated[User, Depend
             raise HTTPException(
                 status_code=400, detail="Favorite landmark already exists")
 
-        current_user.add_favorite_landmark(body.get("id"))
+        current_user.add_favorite_landmark(new_landmark)
     except Exception as e:
         raise HTTPException(status_code=400, detail="Invalid landmark")
 

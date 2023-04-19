@@ -20,22 +20,42 @@ router = APIRouter(
 
 
 @router.get("/", status_code=status.HTTP_200_OK)
-async def get_all_magazine():
+async def get_magazines():
     '''
     # get all magazine objects in magazine catalog
     '''
-    all_magazines = magazines_collection.get_magazines()
-
-    if all_magazines is None:
-        raise HTTPException(status_code=404, detail="No magazines found")
+    magazines = magazines_collection.get_magazines()
 
     return [
         {
             'id': magazine.get_id(),
             'title': magazine.get_title(),
             'description': magazine.get_description(),
-            'roadtrips': roadtrips_collection.get_roadtrips_by_magazine_id(magazine.get_id())
-        } for magazine in all_magazines
+            'roadtrips': [
+                {
+                    'id': roadtrip.get_id(),
+                    'title': roadtrip.get_title(),
+                    'sub_title': roadtrip.get_sub_title(),
+                    'description': roadtrip.get_description(),
+                    'waypoints': [
+                        {
+                            'id': waypoint.get_id(),
+                            'name': waypoint.get_name(),
+                            'amenity': waypoint.get_amenity(),
+                            'opening_hours': waypoint.get_opening_hours(),
+                            'description': waypoint.get_description(),
+                            'position': waypoint.get_position(),
+                            'note': waypoint.get_note()
+                        } for waypoint in roadtrip.get_waypoints()
+                    ],
+                    'distance_between_waypoints': roadtrip.get_distance_between_waypoints(),
+                    'total_distance': roadtrip.get_total_distance(),
+                    'total_time': roadtrip.get_total_time(),
+                    'category': roadtrip.get_category(),
+                    'summary': roadtrip.get_summary(),
+                } for roadtrip in roadtrips_collection.get_roadtrips_by_magazine_id(magazine.get_id())
+            ]
+        } for magazine in magazines
     ]
 
 
@@ -49,34 +69,66 @@ async def get_magazine_by_id(magazine_id: str):
     if magazine_exists is None:
         raise HTTPException(status_code=404, detail="No magazines found")
 
-    roadtrips = roadtrips_collection.get_roadtrips_by_magazine_id(magazine_id)
-
     return {
         "id": magazine_exists.get_id(),
         "title": magazine_exists.get_title(),
         "description": magazine_exists.get_description(),
-        "roadtrips": roadtrips
+        "roadtrips": [
+            {
+                'id': roadtrip.get_id(),
+                'title': roadtrip.get_title(),
+                'sub_title': roadtrip.get_sub_title(),
+                'description': roadtrip.get_description(),
+                'waypoints': [
+                    {
+                        'id': waypoint.get_id(),
+                        'name': waypoint.get_name(),
+                        'amenity': waypoint.get_amenity(),
+                        'opening_hours': waypoint.get_opening_hours(),
+                        'description': waypoint.get_description(),
+                        'position': waypoint.get_position(),
+                        'note': waypoint.get_note()
+                    } for waypoint in roadtrip.get_waypoints()
+                ],
+                'distance_between_waypoints': roadtrip.get_distance_between_waypoints(),
+                'total_distance': roadtrip.get_total_distance(),
+                'total_time': roadtrip.get_total_time(),
+                'category': roadtrip.get_category(),
+                'summary': roadtrip.get_summary(),
+            } for roadtrip in roadtrips_collection.get_roadtrips_by_magazine_id(magazine_exists.get_id())
+
+        ]
     }
 
 
-@router.post("/", status_code=status.HTTP_201_CREATED)
+@ router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_magazine(body: dict, current_user: Annotated[Admin, Depends(check_admin_role)]):
     '''
     # create new magazine
     ### request body
     - title: `str`
     - description: `str`
+    - roadtrips_ids: `list[str]`
     '''
 
     if not body:
         raise HTTPException(status_code=400, detail="Body is required")
 
+    roadtrips = body.get("roadtrips", [])
+
+    for roadtrip_id in roadtrips:
+        if roadtrips_collection.get_roadtrip_by_id(roadtrip_id) is None:
+            raise HTTPException(status_code=404, detail="Roadtrip not found")
+
     new_magazine = Magazine(
         title=body.get("title", ""),
         description=body.get("description", ""),
     )
-
     magazines_collection.add_magazine(new_magazine)
+
+    for roadtrip_id in roadtrips:
+        roadtrips_collection.get_roadtrip_by_id(
+            roadtrip_id).add_magazine(new_magazine)
 
     return {
         "detail": "magazine created successfully",

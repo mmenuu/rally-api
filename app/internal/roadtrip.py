@@ -1,4 +1,5 @@
 from .waypoint import Waypoint
+from .magazine import Magazine
 import uuid
 
 
@@ -15,7 +16,7 @@ class Roadtrip:
         self.__distance_between_waypoints = list()
         self.__total_distance = 0
         self.__total_time = 0
-        self.__magazines_id = list()
+        self.__magazines = list() # pointer to magazines
         self.__category = ''
         self.__summary = ''
 
@@ -53,8 +54,8 @@ class Roadtrip:
     def get_summary(self):
         return self.__summary
 
-    def get_magazines_id(self):
-        return self.__magazines_id
+    def get_magazines(self):
+        return self.__magazines
 
     # Setters
     def set_title(self, title: str):
@@ -84,19 +85,12 @@ class Roadtrip:
     def set_summary(self, summary: str):
         self.__summary = summary
 
-    def add_magazine_id(self, magazine_id: str):
-        self.__magazines_id.append(magazine_id)
+    def add_magazine(self, magazine: Magazine):
+        self.__magazines.append(magazine)
 
-    def remove_magazine_id(self, magazine_id: str):
-        self.__magazines_id.remove(magazine_id)
+    def remove_magazine(self, magazine: Magazine):
+        self.__magazines.remove(magazine)
 
     # Utility methods
     def get_magazine_by_id(self, magazine_id: str):
-        if magazine_id in self.__magazines_id:
-            return magazine_id
-        return None
-
-    def get_roadtrip_by_magazine(self, magazine_id: str):
-        if magazine_id in self.__magazines_id:
-            return self
-        return None
+        return next((magazine for magazine in self.__magazines if magazine.get_id() == magazine_id), None)

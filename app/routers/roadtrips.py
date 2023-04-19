@@ -51,7 +51,6 @@ async def read_roadtrips(user: str | None = None):
                 'total_distance': roadtrip.get_total_distance(),
                 'total_time': roadtrip.get_total_time(),
                 'description': roadtrip.get_description(),
-                'magazines': roadtrip.get_magazines_id(),
                 'category': roadtrip.get_category(),
                 'summary': roadtrip.get_summary()
             }
@@ -78,7 +77,6 @@ async def read_roadtrips(user: str | None = None):
             'distance_between_waypoints': roadtrip.get_distance_between_waypoints(),
             'total_distance': roadtrip.get_total_distance(),
             'total_time': roadtrip.get_total_time(),
-            'magazines': roadtrip.get_magazines_id(),
             'description': roadtrip.get_description(),
             'category': roadtrip.get_category(),
             'summary': roadtrip.get_summary()
@@ -118,7 +116,6 @@ async def read_roadtrip(roadtrip_id: str):
         'distance_between_waypoints': roadtrip_exists.get_distance_between_waypoints(),
         'total_distance': roadtrip_exists.get_total_distance(),
         'total_time': roadtrip_exists.get_total_time(),
-        'magazines': roadtrip_exists.get_magazines_id(),
         'category': roadtrip_exists.get_category(),
         'description': roadtrip_exists.get_description(),
         'summary': roadtrip_exists.get_summary(),
@@ -226,18 +223,6 @@ async def update_roadtrip(roadtrip_id: str, body: dict, current_user: Annotated[
         except Exception as e:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST, detail=f"Invalid waypoints: {e}")
-
-    if body.get('magazine_id'):
-        magazine_id = body.get('magazine_id')
-        magazine_exists = magazines_collection.get_magazine_by_id(magazine_id)
-        if not magazine_exists:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="Magazine not found")
-
-        if magazine_id not in roadtrip_exists.get_magazines_id():
-            roadtrip_exists.add_magazine_id(magazine_id)
-        else:
-            roadtrip_exists.remove_magazine_id(magazine_id)
 
     return {
         "detail": "Roadtrip updated successfully",

@@ -37,4 +37,4 @@ class RoadtripCatalog:
         return search_result
 
     def get_roadtrips_by_magazine_id(self, magazine_id: str):
-        return [roadtrip for roadtrip in self.__roadtrips if magazine_id in roadtrip.get_magazines_id()]
+        return [roadtrip for roadtrip in self.__roadtrips if roadtrip.get_magazine_by_id(magazine_id) is not None]
