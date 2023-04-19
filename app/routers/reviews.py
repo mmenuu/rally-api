@@ -29,15 +29,16 @@ async def read_reviews(user: str | None = None):
         if user_exists is None:
             raise HTTPException(status_code=404, detail="User not found")
 
-        user_reviews = [landmark.get_review_by_username(
-            user) for landmark in landmarks_collection.get_landmarks()]
+        user_reviews = [{
+            "landmark_id": landmark.get_id(),
+            "landmark_name": landmark.get_name(),
+            "review_text": landmark.get_review_by_username(
+                user).get_review_text(),
+            "rating": landmark.get_review_by_username(
+                user).get_rating()
+        } for landmark in landmarks_collection.get_landmarks()]
 
-        return [{
-            "id": review.get_id(),
-            "reviewer": review.get_reviewer(),
-            "review_text": review.get_review_text(),
-            "rating": review.get_rating()
-        } for review in user_reviews if review is not None]
+        return user_reviews
 
     return [{
         "id": review.get_id(),
