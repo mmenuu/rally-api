@@ -21,7 +21,6 @@ app.include_router(magazines.router)
 app.include_router(roadtrips.router)
 app.include_router(landmarks.router)
 app.include_router(reviews.router)
-
 app.include_router(favorites.router)
 
 
