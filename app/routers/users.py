@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from typing import Annotated
 
 from ..databases import accounts_collection
-from ..dependencies import get_current_user, User, check_admin_role
+from ..dependencies import get_current_user, User, check_admin_role, Admin
 
 router = APIRouter(
     prefix="/users",
@@ -32,14 +32,15 @@ async def read_users(isAdmin: Annotated[bool, Depends(check_admin_role)]):
 
 
 @router.get('/profile', status_code=status.HTTP_200_OK)
-async def read_profile(current_user: Annotated[User, Depends(get_current_user)]):
+async def read_profile(current_user: Annotated[User | Admin, Depends(get_current_user)]):
     '''
     # Get profile
     '''
     return {
         'id': current_user.get_id(),
         'username': current_user.get_username(),
-        'email': current_user.get_email()
+        'email': current_user.get_email(),
+        'is_admin': isinstance(current_user, Admin)
     }
 
 
@@ -56,5 +57,5 @@ async def read_profile_by_username(username: str):
     return {
         'id': user_exists.get_id(),
         'username': user_exists.get_username(),
-        'email': user_exists.get_email()
+        'email': user_exists.get_email(),
     }
