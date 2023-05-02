@@ -24,6 +24,6 @@ class LandmarkCatalog:
 
     def get_landmarks_by_keyword(self, keyword: str):
         regex = re.compile(keyword, re.IGNORECASE)
-        search_result = set(item for item in self.__landmarks if any(regex.search(attr) for attr in [item.get_name(), item.get_position()]))
+        search_result = set(item for item in self.__landmarks if any(regex.search(attr) for attr in [item.get_name(), f"{item.get_position()[0]} {item.get_position()[1]}"]))
 
         return search_result
