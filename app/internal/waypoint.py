@@ -28,8 +28,6 @@ class Waypoint(Landmark):
             'amenity': self.get_amenity(),
             'position': self.get_position(),
             'opening_hours': self.get_opening_hours(),
-            'reviews': [review.to_dict() for review in self.get_reviews()],
-            'average_rating': self.get_average_rating(),
             'note': self.get_note(),
             'description': self.get_description()
         }
