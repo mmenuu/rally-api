@@ -25,8 +25,11 @@ async def get_magazines():
     # get all magazine objects in magazine catalog
     '''
 
-    return [ magazine.to_dict() for magazine in magazines_collection.get_magazines()]
-
+    return [
+        {
+            **magazine.to_dict(), 
+            "roadtrips": [ roadtrip.to_dict() for roadtrip in roadtrips_collection.get_roadtrips_by_magazine_id(magazine.get_id())]
+        } for magazine in magazines_collection.get_magazines()]
 
 @router.get("/{magazine_id}", status_code=status.HTTP_200_OK)
 async def get_magazine_by_id(magazine_id: str):
