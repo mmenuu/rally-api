@@ -32,7 +32,7 @@ class RoadtripCatalog:
         search_result = set(item for item in self.__roadtrips if
                             any(regex.search(attr) for attr in [item.get_title(), item.get_author(),
                                                                 item.get_category()]) or
-                            any(regex.search(waypoint.title) for waypoint in item.get_waypoints()))
+                            any(regex.search(waypoint.get_name()) for waypoint in item.get_waypoints()))
 
         return search_result
 
