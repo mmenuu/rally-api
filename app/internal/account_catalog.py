@@ -28,6 +28,6 @@ class AccountCatalog:
     
     def get_accounts_by_keyword(self, keyword: str):
         regex = re.compile(keyword, re.IGNORECASE)
-        search_result = set(item for item in self.__users if any(regex.search(attr) for attr in [item.get_email(), item.get_username()]))
+        search_result = set(item for item in self.__users if any(regex.search(attr) for attr in [item.get_email(), item.get_username(), item.get_id()]))
 
         return search_result
