@@ -29,3 +29,11 @@ class Review:
     
     def set_rating(self, rating: float):
         self.__rating = rating  
+
+    def to_dict(self):
+        return {
+            'id': self.get_id(),
+            'review_text': self.get_review_text(),
+            'reviewer': self.get_reviewer(),
+            'rating': self.get_rating()
+        }

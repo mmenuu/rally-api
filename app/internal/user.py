@@ -19,3 +19,13 @@ class User(Account):
 
     def remove_favorite_landmark(self, landmark: Landmark):
         self.__favorite_landmarks.remove(landmark)
+
+
+    def to_dict(self):
+        return {
+            'id': self.get_id(),
+            'email': self.get_email(),
+            'username': self.get_username(),
+            'password': self.get_password(),
+            'favorite_landmarks': [landmark.to_dict() for landmark in self.get_favorite_landmarks()]
+        }

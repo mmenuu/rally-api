@@ -94,3 +94,19 @@ class Roadtrip:
     # Utility methods
     def get_magazine_by_id(self, magazine_id: str):
         return next((magazine for magazine in self.__magazines if magazine.get_id() == magazine_id), None)
+
+    def to_dict(self):
+        return {
+            'id': self.__id,
+            'author': self.__author,
+            'title': self.__title,
+            'sub_title': self.__sub_title,
+            'description': self.__description,
+            'waypoints': [waypoint.to_dict() for waypoint in self.__waypoints],
+            'distance_between_waypoints': self.__distance_between_waypoints,
+            'total_distance': self.__total_distance,
+            'total_time': self.__total_time,
+            'category': self.__category,
+            'magazines': [magazine.to_dict() for magazine in self.__magazines],
+            'summary': self.__summary,
+        }

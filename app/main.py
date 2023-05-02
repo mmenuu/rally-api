@@ -2,7 +2,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .routers import users, auth, roadtrips, magazines, favorites, reviews, landmarks
+from .routers import users, auth, roadtrips, magazines, favorites, reviews, landmarks, search
 
 app = FastAPI()
 
@@ -22,6 +22,7 @@ app.include_router(roadtrips.router)
 app.include_router(landmarks.router)
 app.include_router(reviews.router)
 app.include_router(favorites.router)
+app.include_router(search.router)
 
 
 @app.get("/")

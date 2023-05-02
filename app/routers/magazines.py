@@ -24,39 +24,8 @@ async def get_magazines():
     '''
     # get all magazine objects in magazine catalog
     '''
-    magazines = magazines_collection.get_magazines()
 
-    return [
-        {
-            'id': magazine.get_id(),
-            'title': magazine.get_title(),
-            'description': magazine.get_description(),
-            'roadtrips': [
-                {
-                    'id': roadtrip.get_id(),
-                    'title': roadtrip.get_title(),
-                    'sub_title': roadtrip.get_sub_title(),
-                    'description': roadtrip.get_description(),
-                    'waypoints': [
-                        {
-                            'id': waypoint.get_id(),
-                            'name': waypoint.get_name(),
-                            'amenity': waypoint.get_amenity(),
-                            'opening_hours': waypoint.get_opening_hours(),
-                            'description': waypoint.get_description(),
-                            'position': waypoint.get_position(),
-                            'note': waypoint.get_note()
-                        } for waypoint in roadtrip.get_waypoints()
-                    ],
-                    'distance_between_waypoints': roadtrip.get_distance_between_waypoints(),
-                    'total_distance': roadtrip.get_total_distance(),
-                    'total_time': roadtrip.get_total_time(),
-                    'category': roadtrip.get_category(),
-                    'summary': roadtrip.get_summary(),
-                } for roadtrip in roadtrips_collection.get_roadtrips_by_magazine_id(magazine.get_id())
-            ]
-        } for magazine in magazines
-    ]
+    return [ magazine.to_dict() for magazine in magazines_collection.get_magazines()]
 
 
 @router.get("/{magazine_id}", status_code=status.HTTP_200_OK)
@@ -73,31 +42,7 @@ async def get_magazine_by_id(magazine_id: str):
         "id": magazine_exists.get_id(),
         "title": magazine_exists.get_title(),
         "description": magazine_exists.get_description(),
-        "roadtrips": [
-            {
-                'id': roadtrip.get_id(),
-                'title': roadtrip.get_title(),
-                'sub_title': roadtrip.get_sub_title(),
-                'description': roadtrip.get_description(),
-                'waypoints': [
-                    {
-                        'id': waypoint.get_id(),
-                        'name': waypoint.get_name(),
-                        'amenity': waypoint.get_amenity(),
-                        'opening_hours': waypoint.get_opening_hours(),
-                        'description': waypoint.get_description(),
-                        'position': waypoint.get_position(),
-                        'note': waypoint.get_note()
-                    } for waypoint in roadtrip.get_waypoints()
-                ],
-                'distance_between_waypoints': roadtrip.get_distance_between_waypoints(),
-                'total_distance': roadtrip.get_total_distance(),
-                'total_time': roadtrip.get_total_time(),
-                'category': roadtrip.get_category(),
-                'summary': roadtrip.get_summary(),
-            } for roadtrip in roadtrips_collection.get_roadtrips_by_magazine_id(magazine_exists.get_id())
-
-        ]
+        "roadtrips": [ roadtrip.to_dict() for roadtrip in roadtrips_collection.get_roadtrips_by_magazine_id(magazine_exists.get_id()) ]
     }
 
 

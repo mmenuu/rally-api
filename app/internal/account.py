@@ -29,3 +29,11 @@ class Account:
 
     def set_password(self, password):
         self.__password = password
+
+    def to_dict(self):
+        return {
+            'id': self.__id,
+            'email': self.__email,
+            'username': self.__username,
+            'password': self.__password
+        }

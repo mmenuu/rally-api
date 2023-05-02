@@ -24,92 +24,14 @@ async def read_roadtrips(user: str | None = None, search: str | None = None):
     '''
     # Get all roadtrips
     '''
-    if search:
-        return [
-            {
-                'id': roadtrip.get_id(),
-                'title': roadtrip.get_title(),
-                'sub_title': roadtrip.get_sub_title(),
-                'author': roadtrip.get_author(),
-                'waypoints': [
-                    {
-                        'id': waypoint.get_id(),
-                        'name': waypoint.get_name(),
-                        'description': waypoint.get_description(),
-                        'position': waypoint.get_position(),
-                        'amenity': waypoint.get_amenity(),
-                        'opening_hours': waypoint.get_opening_hours(),
-                        'note': waypoint.get_note(),
-                    } for waypoint in roadtrip.get_waypoints()
-                ],
-                'distance_between_waypoints': roadtrip.get_distance_between_waypoints(),
-                'total_distance': roadtrip.get_total_distance(),
-                'total_time': roadtrip.get_total_time(),
-                'description': roadtrip.get_description(),
-                'category': roadtrip.get_category(),
-                'summary': roadtrip.get_summary()
-            }
-            for roadtrip in roadtrips_collection.get_roadtrips_by_keyword(search)
-        ]
-
     if user:
         user_exists = accounts_collection.get_account_by_username(user)
         if not user_exists:
             raise HTTPException(status_code=404, detail="User not found")
 
-        return [
-            {
-                'id': roadtrip.get_id(),
-                'title': roadtrip.get_title(),
-                'sub_title': roadtrip.get_sub_title(),
-                'author': roadtrip.get_author(),
-                'waypoints': [
-                    {
-                        'id': waypoint.get_id(),
-                        'name': waypoint.get_name(),
-                        'description': waypoint.get_description(),
-                        'position': waypoint.get_position(),
-                        'amenity': waypoint.get_amenity(),
-                        'opening_hours': waypoint.get_opening_hours(),
-                        'note': waypoint.get_note(),
-                    } for waypoint in roadtrip.get_waypoints()
-                ],
-                'distance_between_waypoints': roadtrip.get_distance_between_waypoints(),
-                'total_distance': roadtrip.get_total_distance(),
-                'total_time': roadtrip.get_total_time(),
-                'description': roadtrip.get_description(),
-                'category': roadtrip.get_category(),
-                'summary': roadtrip.get_summary()
-            }
-            for roadtrip in roadtrips_collection.get_roadtrips_by_username(user_exists.get_username())
-        ]
+        return [ roadtrip.to_dict() for roadtrip in roadtrips_collection.get_roadtrips_by_username(user_exists.get_username())]
 
-    return [
-        {
-            'id': roadtrip.get_id(),
-            'title': roadtrip.get_title(),
-            'sub_title': roadtrip.get_sub_title(),
-            'author': roadtrip.get_author(),
-            'waypoints': [
-                {
-                    'id': waypoint.get_id(),
-                    'name': waypoint.get_name(),
-                    'description': waypoint.get_description(),
-                    'position': waypoint.get_position(),
-                    'amenity': waypoint.get_amenity(),
-                    'opening_hours': waypoint.get_opening_hours(),
-                    'note': waypoint.get_note(),
-                } for waypoint in roadtrip.get_waypoints()
-            ],
-            'distance_between_waypoints': roadtrip.get_distance_between_waypoints(),
-            'total_distance': roadtrip.get_total_distance(),
-            'total_time': roadtrip.get_total_time(),
-            'description': roadtrip.get_description(),
-            'category': roadtrip.get_category(),
-            'summary': roadtrip.get_summary()
-        }
-        for roadtrip in roadtrips_collection.get_roadtrips()
-    ]
+    return [ roadtrip.to_dict() for roadtrip in roadtrips_collection.get_roadtrips() ]
 
 
 @router.get("/{roadtrip_id}", status_code=status.HTTP_200_OK)
@@ -124,30 +46,7 @@ async def read_roadtrip(roadtrip_id: str):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Roadtrip not found")
 
-    return {
-        'id': roadtrip_exists.get_id(),
-        'title': roadtrip_exists.get_title(),
-        'sub_title': roadtrip_exists.get_sub_title(),
-        'description': roadtrip_exists.get_description(),
-        'waypoints': [
-            {
-                'id': waypoint.get_id(),
-                'name': waypoint.get_name(),
-                'amenity': waypoint.get_amenity(),
-                'opening_hours': waypoint.get_opening_hours(),
-                'description': waypoint.get_description(),
-                'position': waypoint.get_position(),
-                'note': waypoint.get_note(),
-            } for waypoint in roadtrip_exists.get_waypoints()
-        ],
-        'distance_between_waypoints': roadtrip_exists.get_distance_between_waypoints(),
-        'total_distance': roadtrip_exists.get_total_distance(),
-        'total_time': roadtrip_exists.get_total_time(),
-        'category': roadtrip_exists.get_category(),
-        'description': roadtrip_exists.get_description(),
-        'summary': roadtrip_exists.get_summary(),
-        'author': roadtrip_exists.get_author()
-    }
+    return roadtrip_exists.to_dict()
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)

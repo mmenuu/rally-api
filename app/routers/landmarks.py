@@ -24,19 +24,7 @@ async def read_landmarks(current_user: Annotated[User, Depends(get_current_user)
     # get all landmarks
     '''
 
-    return [{
-        "id": landmark.get_id(),
-        "name": landmark.get_name(),
-        "amenity": landmark.get_amenity(),
-        "position": landmark.get_position(),
-        "opening_hours": landmark.get_opening_hours(),
-        "reviews": [{
-            "id": review.get_id(),
-            "reviewer": review.get_reviewer(),
-            "review_text": review.get_review_text(),
-            "rating": review.get_rating()
-        } for review in landmark.get_reviews()]
-    } for landmark in landmarks_collection.get_landmarks()]
+    return [landmark.to_dict() for landmark in landmarks_collection.get_landmarks()]
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
@@ -75,17 +63,4 @@ async def read_landmark(landmark_id: str, current_user: Annotated[User, Depends(
     if not landmark:
         raise HTTPException(status_code=404, detail="Landmark not found")
 
-    return {
-        "id": landmark.get_id(),
-        "name": landmark.get_name(),
-        "amenity": landmark.get_amenity(),
-        "position": landmark.get_position(),
-        "opening_hours": landmark.get_opening_hours(),
-        "average_rating": landmark.get_average_rating(),
-        "reviews": [{
-            "id": review.get_id(),
-            "reviewer": review.get_reviewer(),
-            "review_text": review.get_review_text(),
-            "rating": review.get_rating()
-        } for review in landmark.get_reviews()]
-    }
+    return landmark.to_dict()

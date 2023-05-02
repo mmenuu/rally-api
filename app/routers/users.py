@@ -21,14 +21,7 @@ async def read_users(isAdmin: Annotated[bool, Depends(check_admin_role)]):
     # Get all users
     '''
 
-    return [
-        {
-            'id': user.get_id(),
-            'username': user.get_username(),
-            'email': user.get_email()
-        }
-        for user in accounts_collection.get_accounts()
-    ]
+    return [ user.to_dict() for user in accounts_collection.get_accounts()]
 
 
 @router.get('/profile', status_code=status.HTTP_200_OK)
@@ -37,9 +30,7 @@ async def read_profile(current_user: Annotated[User | Admin, Depends(get_current
     # Get profile
     '''
     return {
-        'id': current_user.get_id(),
-        'username': current_user.get_username(),
-        'email': current_user.get_email(),
+        **current_user.to_dict(),
         'is_admin': isinstance(current_user, Admin)
     }
 
@@ -54,8 +45,4 @@ async def read_profile_by_username(username: str):
     if user_exists is None:
         raise HTTPException(status_code=404, detail="User not found")
 
-    return {
-        'id': user_exists.get_id(),
-        'username': user_exists.get_username(),
-        'email': user_exists.get_email(),
-    }
+    return user_exists.to_dict()

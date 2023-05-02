@@ -22,3 +22,10 @@ class Magazine:
 
     def set_description(self, text: str):
         self.__description = text
+
+    def to_dict(self):
+        return {
+            'id': self.get_id(),
+            'title': self.get_title(),
+            'description': self.get_description()
+        }

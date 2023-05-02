@@ -25,3 +25,4 @@ class AccountCatalog:
 
     def remove_account(self, user: User | Admin):
         self.__users.remove(user)
+        

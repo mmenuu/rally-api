@@ -23,13 +23,7 @@ async def read_favorites(current_user: Annotated[User, Depends(get_current_user)
     # get all favorite landmarks by current user
     '''
 
-    return [{
-        "id": landmark.get_id(),
-        "name": landmark.get_name(),
-        "amenity": landmark.get_amenity(),
-        "position": landmark.get_position(),
-        "opening_hours": landmark.get_opening_hours(),
-    } for landmark in current_user.get_favorite_landmarks()]
+    return [landmark.to_dict() for landmark in current_user.get_favorite_landmarks()]
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)

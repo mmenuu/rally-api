@@ -34,10 +34,7 @@ async def read_reviews(user: str | None = None):
             for review in landmark.get_reviews():
                 if review.get_reviewer() == user:
                     user_reviews.append({
-                        "id": review.get_id(),
-                        "reviewer": review.get_reviewer(),
-                        "review_text": review.get_review_text(),
-                        "rating": review.get_rating(),
+                        **review.to_dict(),
                         "landmark_id": landmark.get_id(),
                         "landmark_name": landmark.get_name()
                     })
@@ -45,10 +42,7 @@ async def read_reviews(user: str | None = None):
         return user_reviews
 
     return [{
-        "id": review.get_id(),
-        "reviewer": review.get_reviewer(),
-        "review_text": review.get_review_text(),
-        "rating": review.get_rating(),
+        **review.to_dict(),
         "landmark_id": landmark.get_id(),
         "landmark_name": landmark.get_name()
     } for landmark in landmarks_collection.get_landmarks() for review in landmark.get_reviews()]
