@@ -20,10 +20,37 @@ router = APIRouter(
 
 
 @router.get("/", status_code=status.HTTP_200_OK)
-async def read_roadtrips(user: str | None = None):
+async def read_roadtrips(user: str | None = None, search: str | None = None):
     '''
     # Get all roadtrips
     '''
+    if search:
+        return [
+            {
+                'id': roadtrip.get_id(),
+                'title': roadtrip.get_title(),
+                'sub_title': roadtrip.get_sub_title(),
+                'author': roadtrip.get_author(),
+                'waypoints': [
+                    {
+                        'id': waypoint.get_id(),
+                        'name': waypoint.get_name(),
+                        'description': waypoint.get_description(),
+                        'position': waypoint.get_position(),
+                        'amenity': waypoint.get_amenity(),
+                        'opening_hours': waypoint.get_opening_hours(),
+                        'note': waypoint.get_note(),
+                    } for waypoint in roadtrip.get_waypoints()
+                ],
+                'distance_between_waypoints': roadtrip.get_distance_between_waypoints(),
+                'total_distance': roadtrip.get_total_distance(),
+                'total_time': roadtrip.get_total_time(),
+                'description': roadtrip.get_description(),
+                'category': roadtrip.get_category(),
+                'summary': roadtrip.get_summary()
+            }
+            for roadtrip in roadtrips_collection.get_roadtrips_by_keyword(search)
+        ]
 
     if user:
         user_exists = accounts_collection.get_account_by_username(user)
