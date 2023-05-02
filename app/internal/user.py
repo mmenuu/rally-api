@@ -26,6 +26,5 @@ class User(Account):
             'id': self.get_id(),
             'email': self.get_email(),
             'username': self.get_username(),
-            'password': self.get_password(),
             'favorite_landmarks': [landmark.to_dict() for landmark in self.get_favorite_landmarks()]
         }
