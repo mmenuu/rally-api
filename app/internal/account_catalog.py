@@ -1,6 +1,6 @@
 from .user import User
 from .admin import Admin
-
+import re
 
 class AccountCatalog:
     def __init__(self):
@@ -25,4 +25,9 @@ class AccountCatalog:
 
     def remove_account(self, user: User | Admin):
         self.__users.remove(user)
-        
+    
+    def get_accounts_by_keyword(self, keyword: str):
+        regex = re.compile(keyword, re.IGNORECASE)
+        search_result = set(item for item in self.__users if any(regex.search(attr) for attr in [item.get_email(), item.get_username()]))
+
+        return search_result

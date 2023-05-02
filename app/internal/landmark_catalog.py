@@ -1,5 +1,5 @@
 from .landmark import Landmark
-
+import re
 
 class LandmarkCatalog:
     def __init__(self):
@@ -21,3 +21,9 @@ class LandmarkCatalog:
 
     def remove_landmark(self, landmark: Landmark):
         self.__landmarks.remove(landmark)
+
+    def get_landmarks_by_keyword(self, keyword: str):
+        regex = re.compile(keyword, re.IGNORECASE)
+        search_result = set(item for item in self.__landmarks if any(regex.search(attr) for attr in [item.get_name(), item.get_position()]))
+
+        return search_result
