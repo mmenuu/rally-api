@@ -26,7 +26,6 @@ async def read_search(query: str | None = None):
             'type': 'roadtrip'
           }
           for roadtrip in roadtrips_collection.get_roadtrips_by_keyword(query)
-
         ] + [
             {
                 **landmark.to_dict(),
