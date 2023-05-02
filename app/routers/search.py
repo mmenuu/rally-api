@@ -21,24 +21,24 @@ router = APIRouter(
 async def read_search(query: str | None = None):
     if query:
       result = [
-          {
-            **roadtrip.to_dict(),
-            'type': 'roadtrip'
-          }
-          for roadtrip in roadtrips_collection.get_roadtrips_by_keyword(query)
+            {
+                **account.to_dict(),
+                'type': 'user'
+            }
+            for account in accounts_collection.get_accounts_by_keyword(query)
         ] + [
             {
                 **landmark.to_dict(),
                 'type': 'landmark'
             }
             for landmark in landmarks_collection.get_landmarks_by_keyword(query)
-        ] + [
-            {
-                **account.to_dict(),
-                'type': 'user'
-            }
-            for account in accounts_collection.get_accounts_by_keyword(query)
-      ]
+        ]  + [
+          {
+            **roadtrip.to_dict(),
+            'type': 'roadtrip'
+          }
+          for roadtrip in roadtrips_collection.get_roadtrips_by_keyword(query)
+        ] 
 
       return result
       
