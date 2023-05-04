@@ -1,7 +1,7 @@
 from typing import Annotated
 from fastapi import APIRouter, HTTPException, status, Depends
 
-from ..databases import roadtrips_collection, magazines_collection, accounts_collection
+from ..databases import roadtrips_collection, magazines_collection, persons_collection
 from ..dependencies import get_current_user, User
 
 from ..internal.roadtrip import Roadtrip
@@ -21,11 +21,8 @@ router = APIRouter(
 
 @router.get("/", status_code=status.HTTP_200_OK)
 async def read_roadtrips(user: str | None = None, search: str | None = None):
-    '''
-    # Get all roadtrips
-    '''
     if user:
-        user_exists = accounts_collection.get_account_by_username(user)
+        user_exists = persons_collection.get_person_by_username(user)
         if not user_exists:
             raise HTTPException(status_code=404, detail="User not found")
 
@@ -36,10 +33,6 @@ async def read_roadtrips(user: str | None = None, search: str | None = None):
 
 @router.get("/{roadtrip_id}", status_code=status.HTTP_200_OK)
 async def read_roadtrip(roadtrip_id: str):
-    '''
-    # Get a roadtrip by id
-    @param roadtrip_id: `str` id of the roadtrip
-    '''
     roadtrip_exists = roadtrips_collection.get_roadtrip_by_id(roadtrip_id)
 
     if roadtrip_exists is None:
@@ -51,16 +44,6 @@ async def read_roadtrip(roadtrip_id: str):
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_roadtrip(body: dict, current_user: Annotated[User, Depends(get_current_user)]):
-    '''
-    # Create a new roadtrip
-
-    ### request body
-    - title: `str`
-    - sub_title: `str`
-    - description: `str`
-    - category: `str`
-    - summary: `str`
-    '''
     if not body:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Body is required")
@@ -97,26 +80,11 @@ async def create_roadtrip(body: dict, current_user: Annotated[User, Depends(get_
 
 @router.patch("/{roadtrip_id}", status_code=status.HTTP_200_OK)
 async def update_roadtrip(roadtrip_id: str, body: dict, current_user: Annotated[User, Depends(get_current_user)]):
-    '''
-    # Update a roadtrip
-    @param roadtrip_id: `str` id of the roadtrip
-
-    ### request body
-    - title: `str` optional
-    - sub_title: `str` optional
-    - description: `str` optional
-    - category: `str` optional
-    - summary: `str` optional
-    - waypoints: `list` optional
-    - magazine_id: `str` optional
-    '''
-
     if not body:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Body is required")
 
     roadtrip_exists = roadtrips_collection.get_roadtrip_by_id(roadtrip_id)
-
     if not roadtrip_exists:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Roadtrip not found")
@@ -157,12 +125,6 @@ async def update_roadtrip(roadtrip_id: str, body: dict, current_user: Annotated[
 
 @router.delete("/{roadtrip_id}", status_code=status.HTTP_200_OK)
 async def remove_roadtrip(roadtrip_id: str, current_user: Annotated[User, Depends(get_current_user)]):
-    '''
-    # Remove a roadtrip
-
-    @param roadtrip_id: `str` id of the roadtrip
-    '''
-
     roadtrip_exists = roadtrips_collection.get_roadtrip_by_id(roadtrip_id)
 
     if not roadtrip_exists:

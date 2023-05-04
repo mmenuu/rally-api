@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from typing import Annotated
 
-from ..databases import roadtrips_collection, landmarks_collection, accounts_collection
+from ..databases import roadtrips_collection, landmarks_collection, persons_collection
 from ..internal.landmark import Landmark
 from ..dependencies import get_current_user, User
 
@@ -22,10 +22,10 @@ async def read_search(query: str | None = None):
     if query:
       result = [
             {
-                **account.to_dict(),
+                **person.to_dict(),
                 'type': 'user'
             }
-            for account in accounts_collection.get_accounts_by_keyword(query)
+            for person in persons_collection.get_persons_by_keyword(query)
         ] + [
             {
                 **landmark.to_dict(),

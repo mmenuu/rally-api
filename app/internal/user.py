@@ -1,7 +1,7 @@
-from .account import Account
+from .person import Person
 from .landmark import Landmark
 
-class User(Account):
+class User(Person):
     def __init__(self, email, username, password):
         super().__init__(email, username, password)
         self.__favorite_landmarks = []

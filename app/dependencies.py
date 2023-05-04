@@ -7,8 +7,8 @@ from pydantic import BaseModel
 
 from .internal.user import User
 from .internal.admin import Admin
-from .internal.account import Account
-from .databases import accounts_collection
+from .internal.person import Person
+from .databases import persons_collection
 from .config import get_settings
 
 settings = get_settings()
@@ -37,7 +37,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
     except JWTError:
         raise credentials_exception
 
-    user = accounts_collection.get_account_by_username(username=token_data.username)
+    user = persons_collection.get_person_by_username(username=token_data.username)
     if user is None:
         raise credentials_exception
     

@@ -1,5 +1,5 @@
 from .internal.roadtrip_catalog import RoadtripCatalog
-from .internal.account_catalog import AccountCatalog
+from .internal.person_catalog import PersonCatalog
 from .internal.magazine_catalog import MagazineCatalog
 from .internal.landmark_catalog import LandmarkCatalog
 
@@ -8,7 +8,7 @@ from .internal.admin import Admin
 from .utils import get_password_hash
 
 roadtrips_collection = RoadtripCatalog()
-accounts_collection = AccountCatalog()
+persons_collection = PersonCatalog()
 magazines_collection = MagazineCatalog()
 landmarks_collection = LandmarkCatalog()
 
@@ -25,5 +25,5 @@ fake_admin = {
 }
 
 
-accounts_collection.add_account(User(**fake_user))
-accounts_collection.add_account(Admin(**fake_admin))
+persons_collection.add_person(User(**fake_user))
+persons_collection.add_person(Admin(**fake_admin))

@@ -20,20 +20,11 @@ router = APIRouter(
 
 @router.get("/", status_code=status.HTTP_200_OK)
 async def read_landmarks(current_user: Annotated[User, Depends(get_current_user)]):
-    '''
-    # get all landmarks
-    '''
-
     return [landmark.to_dict() for landmark in landmarks_collection.get_landmarks()]
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_landmark(body: dict, current_user: Annotated[User, Depends(get_current_user)]):
-    '''
-    # create new landmark
-
-    @param body: `dict` landmark object
-    '''
 
     if not body:
         raise HTTPException(status_code=400, detail="Body is required")
@@ -52,12 +43,6 @@ async def create_landmark(body: dict, current_user: Annotated[User, Depends(get_
 
 @router.get("/{landmark_id}", status_code=status.HTTP_200_OK)
 async def read_landmark(landmark_id: str, current_user: Annotated[User, Depends(get_current_user)]):
-    '''
-    # get landmark by id
-
-    @param landmark_id: `str` landmark id
-    '''
-
     landmark = landmarks_collection.get_landmark_by_id(landmark_id)
 
     if not landmark:

@@ -21,10 +21,6 @@ router = APIRouter(
 
 @router.get("/", status_code=status.HTTP_200_OK)
 async def get_magazines():
-    '''
-    # get all magazine objects in magazine catalog
-    '''
-
     return [
         {
             **magazine.to_dict(), 
@@ -33,9 +29,6 @@ async def get_magazines():
 
 @router.get("/{magazine_id}", status_code=status.HTTP_200_OK)
 async def get_magazine_by_id(magazine_id: str):
-    '''
-    # get magazine by id
-    '''
     magazine_exists = magazines_collection.get_magazine_by_id(magazine_id)
 
     if magazine_exists is None:
@@ -51,14 +44,6 @@ async def get_magazine_by_id(magazine_id: str):
 
 @ router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_magazine(body: dict, current_user: Annotated[Admin, Depends(check_admin_role)]):
-    '''
-    # create new magazine
-    ### request body
-    - title: `str`
-    - description: `str`
-    - roadtrips_ids: `list[str]`
-    '''
-
     if not body:
         raise HTTPException(status_code=400, detail="Body is required")
 
@@ -86,16 +71,6 @@ async def create_magazine(body: dict, current_user: Annotated[Admin, Depends(che
 
 @router.patch("/{magazine_id}", status_code=status.HTTP_200_OK)
 async def update_magazine(magazine_id: str, body: dict, current_user: Annotated[Admin, Depends(check_admin_role)]):
-    '''
-    #edit magazine by id
-    @param magazine_id: `str` id of magazine
-
-    ### request body
-     - magazine_id: `str` required
-     - title: `str` optional
-     - description: `str` optional
-    '''
-
     if not body:
         raise HTTPException(status_code=400, detail="Body is required")
 
@@ -114,10 +89,6 @@ async def update_magazine(magazine_id: str, body: dict, current_user: Annotated[
 
 @router.delete("/{magazine_id}", status_code=status.HTTP_200_OK)
 async def delete_roadtrip(magazine_id: str, current_user: Annotated[Admin, Depends(check_admin_role)]):
-    '''
-    # delete magazine by id
-    @param roadtrip_id: `str` id of the roadtrip
-    '''
     magazine_exists = magazines_collection.get_magazine_by_id(magazine_id)
     if magazine_exists is None:
         raise HTTPException(

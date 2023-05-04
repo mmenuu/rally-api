@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from typing import Annotated
-from ..databases import landmarks_collection, accounts_collection
+from ..databases import landmarks_collection, persons_collection
 from ..internal.review import Review
 from ..dependencies import get_current_user, User
 
@@ -19,12 +19,8 @@ router = APIRouter(
 
 @router.get('/',  status_code=status.HTTP_200_OK)
 async def read_reviews(user: str | None = None):
-    '''
-    # get all reviews
-    '''
-
     if user:
-        user_exists = accounts_collection.get_account_by_username(user)
+        user_exists = persons_collection.get_person_by_username(user)
         if not user_exists:
             raise HTTPException(status_code=404, detail="User not found")
 
@@ -50,10 +46,6 @@ async def read_reviews(user: str | None = None):
 
 @router.post('/')
 async def create_review(body: dict, current_user: Annotated[User, Depends(get_current_user)]):
-    '''
-    # create new review
-    '''
-
     if not body:
         raise HTTPException(status_code=400, detail="Bad request")
 
@@ -84,18 +76,14 @@ async def create_review(body: dict, current_user: Annotated[User, Depends(get_cu
 
 @router.patch("/{review_id}")
 async def edit_review(review_id, body: dict, current_user: Annotated[User, Depends(get_current_user)]):
-    '''
-    # edit review    
-    '''
-
     if not body:
         raise HTTPException(status_code=400, detail="Bad request")
 
-    landmark = landmarks_collection.get_landmark_by_review_id(review_id)
-    if not landmark:
+    landmark_exists = landmarks_collection.get_landmark_by_review_id(review_id)
+    if not landmark_exists:
         raise HTTPException(404, "Review not found")
 
-    review = landmark.get_review_by_id(review_id)
+    review = landmark_exists.get_review_by_id(review_id)
 
     if review.get_reviewer() != current_user.get_username():
         raise HTTPException(403, "Forbidden")
@@ -110,20 +98,16 @@ async def edit_review(review_id, body: dict, current_user: Annotated[User, Depen
 
 @router.delete("/{review_id}")
 async def delete_review(review_id: str, current_user: Annotated[User, Depends(get_current_user)]):
-    '''
-    # delete review
-    '''
-
-    landmark = landmarks_collection.get_landmark_by_review_id(review_id)
-    if not landmark:
+    # get landmark by review id
+    landmark_exists = landmarks_collection.get_landmark_by_review_id(review_id)
+    if not landmark_exists:
         raise HTTPException(404, "Review not found")
 
-    review = landmark.get_review_by_id(review_id)
-
+    review = landmark_exists.get_review_by_id(review_id)
     if review.get_reviewer() != current_user.get_username():
         raise HTTPException(403, "Forbidden")
 
-    landmark.remove_review(review)
+    landmark_exists.remove_review(review)
 
     return {
         'detail': 'Review deleted'

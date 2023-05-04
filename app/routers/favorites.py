@@ -19,38 +19,32 @@ router = APIRouter(
 
 @router.get("/", status_code=status.HTTP_200_OK)
 async def read_favorites(current_user: Annotated[User, Depends(get_current_user)]):
-    '''
-    # get all favorite landmarks by current user
-    '''
-
     return [landmark.to_dict() for landmark in current_user.get_favorite_landmarks()]
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def add_favorite_landmark(body: dict, current_user: Annotated[User, Depends(get_current_user)]):
-    '''
-    # Add favorite landmark
-
-    @param body: `dict` landmark object
-    '''
     if not body:
         raise HTTPException(status_code=400, detail="Body is required")
 
     try:
-        landmark_exists = landmarks_collection.get_landmark_by_id(
-            body.get("id"))
-        
-        new_landmark = Landmark(**body)
-        if not landmark_exists:
-            landmarks_collection.add_landmark(new_landmark)
-
         favorite_exists = current_user.get_favorite_landmark_by_id(
             body.get("id"))
+        
         if favorite_exists:
             raise HTTPException(
                 status_code=400, detail="Favorite landmark already exists")
-
-        current_user.add_favorite_landmark(new_landmark)
+            
+        landmark_exists = landmarks_collection.get_landmark_by_id(
+            body.get("id"))
+        
+        if not landmark_exists:
+            new_landmark = Landmark(**body)
+            landmarks_collection.add_landmark(new_landmark)
+            current_user.add_favorite_landmark(new_landmark)
+        else:
+            current_user.add_favorite_landmark(landmark_exists)
+            
     except Exception as e:
         raise HTTPException(status_code=400, detail="Invalid landmark")
 
@@ -61,11 +55,6 @@ async def add_favorite_landmark(body: dict, current_user: Annotated[User, Depend
 
 @router.delete("/{landmark_id}", status_code=status.HTTP_200_OK)
 async def remove_favorite_landmark(landmark_id: str, current_user: Annotated[User, Depends(get_current_user)]):
-    '''
-    # Remove favorite landmark by landmark id
-
-    @param landmark_id: `str` id of the landmark
-    '''
 
     favorite_landmark_exists = current_user.get_favorite_landmark_by_id(
         landmark_id)
