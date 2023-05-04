@@ -7,21 +7,21 @@ class User(Person):
         self.__favorite_landmarks = []
 
     # Getters
-    def get_favorite_landmarks(self):
+    def get_favorite_landmarks(self) -> list[Landmark]:
         return self.__favorite_landmarks
 
-    def get_favorite_landmark_by_id(self, landmark_id: str):
+    def get_favorite_landmark_by_id(self, landmark_id: str) -> Landmark | None:
         return next((landmark for landmark in self.__favorite_landmarks if landmark.get_id() == landmark_id), None)
 
     # Setters
-    def add_favorite_landmark(self, new_favorite_landmark: Landmark):
+    def add_favorite_landmark(self, new_favorite_landmark: Landmark) -> None:
         self.__favorite_landmarks.append(new_favorite_landmark)
 
-    def remove_favorite_landmark(self, landmark: Landmark):
+    def remove_favorite_landmark(self, landmark: Landmark) -> None:
         self.__favorite_landmarks.remove(landmark)
 
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {
             'id': self.get_id(),
             'email': self.get_email(),

@@ -8,20 +8,20 @@ class Waypoint(Landmark):
         self.__description = description
 
     # Getters
-    def get_note(self):
+    def get_note(self) -> str:
         return self.__note
 
-    def get_description(self):
+    def get_description(self) -> str:
         return self.__description
 
     # Setters
-    def set_note(self, note: str):
+    def set_note(self, note: str) -> None:
         self.__note = note
 
-    def set_description(self, description: str):
+    def set_description(self, description: str) -> None:
         self.__description = description
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {
             'id': self.get_id(),
             'name': self.get_name(),

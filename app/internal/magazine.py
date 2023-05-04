@@ -7,23 +7,23 @@ class Magazine:
         self.__description = description
 
     # Getters
-    def get_title(self):
+    def get_title(self) -> str:
         return self.__title
 
-    def get_description(self):
+    def get_description(self) -> str:
         return self.__description
 
-    def get_id(self):
+    def get_id(self) -> str:
         return self.__id
 
     # Setters
-    def set_title(self, title: str):
+    def set_title(self, title: str) -> None:
         self.__title = title
 
-    def set_description(self, text: str):
+    def set_description(self, text: str) -> None:
         self.__description = text
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {
             'id': self.get_id(),
             'title': self.get_title(),
