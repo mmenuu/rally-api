@@ -34,6 +34,11 @@ python -m pip install -r requirements.txt
 python -m uvicorn app.main:app --host 0.0.0.0 --port 3000 --reload
 ```
 
+optional: use [Docker](https://www.docker.com/) to run this project
+```bash
+docker-compose up
+```
+
 ## Example .env file
 ```bash
 SECRET_KEY = "YourSecretKey"
